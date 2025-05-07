@@ -1,0 +1,8 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "Package.json básico para ejecución de comandos",
+  "scripts": {
+    "tailwindcssWithoutNode:gardenOfSilentEchoes": "cd ../gardenOfSilentEchoes/styles && tailwindcssWithoutNode -i ./dev.css -o ./styles.css --watch --minify"
+  }
+}
