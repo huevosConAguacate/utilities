@@ -19,7 +19,8 @@ SEO es la sigla para Search Engine Optimization, que significa "optimización pa
 ## Proyectos:
 
 ### gardenOfSilentEchoes
-- https://el-jardin-de-los-ecos-silenciosos.netlify.app/
+- https://huevosconaguacate.github.io/gardenOfSilentEchoes/
+[![Netlify Status](https://api.netlify.com/api/v1/badges/419b7d20-a567-4778-b6cf-d662a68baa5e/deploy-status)](https://app.netlify.com/sites/el-jardin-de-los-ecos-silenciosos/deploys)
 
 ---
 
@@ -42,6 +43,12 @@ SEO es la sigla para Search Engine Optimization, que significa "optimización pa
 - [probar datos estructurados](https://validator.schema.org/)
 
 - [Verificar que la página este correctamente indexada](site:el-jardin-de-los-ecos-silenciosos.netlify.app)
+
+- [Conseguir fichero min de script](https://www.toptal.com/developers/javascript-minifier)
+
+- [Ejemplo sitemap_index](https://www.directoalpaladar.com/sitemap_index.xml)
+
+- [Ejemplo postres/sitemap.xml](https://www.directoalpaladar.com/categoria/postres/sitemap.xml)
 
 ---
 

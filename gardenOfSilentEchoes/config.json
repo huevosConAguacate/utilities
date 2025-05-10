@@ -1,0 +1,32 @@
+{
+    "url": {
+        "loc": "https://huevosconaguacate.github.io/gardenOfSilentEchoes/"
+    },
+    "head": {
+        "icon": {
+            "href": "img/icono.ico",
+            "title": "Icono del Jardín de los Ecos Silenciosos"
+        },
+        "description": "Una fábula sobre la escucha, el valor y los secretos del corazón. Descubre la historia de Elian y la semilla susurrante en el Jardín de los Ecos Silenciosos.",
+        "author": "Guillermo",
+        "time": {
+            "published": "2025-05-01T12:00:00+00:00"
+        },
+        "og": {
+            "type": "website",
+            "image": {
+                "src": "/img/portada.webp",
+                "width": 1200,
+                "height": 630
+            }
+        },
+        "google": {
+            "adsense-account": "ca-pub-2721417416371812",
+            "site-verification": "WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M"
+        },
+        "scripts": [
+            "https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js",
+            "scripts/script.min.js"
+        ]
+    }
+}

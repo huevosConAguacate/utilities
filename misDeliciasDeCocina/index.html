@@ -1,0 +1,98 @@
+<header>
+    <script>
+        const config = {
+            "url": {
+                "loc": ""
+            },
+            "head": {
+                "icon": {
+                    "href": "img/icono.ico",
+                    "title": ""
+                },
+                "description": "",
+                "author": "Guillermo",
+                "time": {
+                    "published": "2025-05-01T12:00:00+00:00"
+                },
+                "og": {
+                    "type": "website",
+                    "image": {
+                        "src": "/img/portada.webp",
+                        "width": 1200,
+                        "height": 630
+                    }
+                },
+                "google": {
+                    "adsense-account": "",
+                    "site-verification": ""
+                },
+                "scripts": [
+                    "scripts/script.min.js"
+                ]
+            }
+        }
+    </script>
+    <script>
+        const initialize = () => {
+
+        }
+    </script>
+    <style>
+        p {
+            color: red;
+        }
+    </style>
+</header>
+<body>
+    <app-root>
+        <app-section name="recetas">
+            <p>Esto aparecerá en la página de recetas y en todas las subsecciones de recetas</p>
+            <use-template ref="item-comida">
+                <title>Esto aparecerá en la página de recetas</title>
+                <description>Esto aparecerá en la página de recetas y en todas las subsecciones de recetas</description>
+                <children>
+                    <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                        ng-content de angular</p>
+                </children>
+            </use-template>
+            <p>Esto aparecerá en la página de recetas y en todas las subsecciones de recetas</p>
+            <app-subsection name="Aves de caza">
+                <p>Esto aparecerá en la página de aves de caza y en todas las páginas subsubsection de página de aves de
+                    caza</p>
+                <app-subsubsection name="pollo con patatas">
+                    <p>mas html para la subsubsection de pollo con patatas</p>
+                    <use-template ref="item">
+                        <title>Pollo con patatas</title>
+                        <description>bla bla bla</description>
+                        <children>
+                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                                ng-content de angular</p>
+                        </children>
+                    </use-template>
+                </app-subsubsection>
+                <app-subsubsection name="pavo con batatas">
+                    <p>mas html para la subsubsection de pavo con batatas</p>
+                    <use-template ref="item">
+                        <title>Pavo con batatas</title>
+                        <description>bla bla bla</description>
+                        <children>
+                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                                ng-content de angular</p>
+                        </children>
+                    </use-template>
+                </app-subsubsection>
+            </app-subsection>
+            <p>Esto aparecerá en la página de recetas y en todas las subsecciones de recetas</p>
+        </app-section>
+    </app-root>
+    <footer></footer>
+</body>
+<templates>
+    <template ref="item-comida">
+        <h2>${title}</h2>
+        <p>
+            ${description}
+        </p>
+        <children></children>
+    </template>
+</templates>

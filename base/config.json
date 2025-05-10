@@ -1,0 +1,31 @@
+{
+    "url": {
+        "loc": ""
+    },
+    "head": {
+        "icon": {
+            "href": "img/icono.ico",
+            "title": ""
+        },
+        "description": "",
+        "author": "Guillermo",
+        "time": {
+            "published": "2025-05-01T12:00:00+00:00"
+        },
+        "og": {
+            "type": "website",
+            "image": {
+                "src": "/img/portada.webp",
+                "width": 1200,
+                "height": 630
+            }
+        },
+        "google": {
+            "adsense-account": "",
+            "site-verification": ""
+        },
+        "scripts": [
+            "scripts/script.min.js"
+        ]
+    }
+}

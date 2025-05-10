@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Package.json básico para ejecución de comandos",
   "scripts": {
-    "tailwindcssWithoutNode:gardenOfSilentEchoes": "cd ../gardenOfSilentEchoes/styles && tailwindcssWithoutNode -i ./dev.css -o ./styles.css --watch --minify"
+    "tailwindcssWithoutNode:gardenOfSilentEchoes": "cd ../gardenOfSilentEchoes/styles && tailwindcssWithoutNode -i ./tailwind.css -o ./tailwind.min.css --minify && tailwindcssWithoutNode -i ./styles.css -o ./styles.min.css --minify"
   }
 }
