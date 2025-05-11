@@ -1,0 +1,200 @@
+<app-head>
+    <link rel="icon" type="image/x-icon" href="img/icono.ico">
+    <title>Página de recetas</title>
+    <meta property="url" content="file:///D:/huevosConAguacate/github/utilities/apps/misDeliciasDeCocina/dist">
+    <meta name="description" content="Página de recetas">
+    <meta name="author" content="Guille">
+    <!-- <meta property="article:author" content="Guille">
+    <meta property="article:publisher" content="https://huevosconaguacate.github.io/gardenOfSilentEchoes/">
+    <meta property="published_time" content="2025-05-01T12:00:00+00:00"> -->
+    <meta property="updated_time" content="2025-05-06T16:02:17+00:00">
+    <meta property="image" content="img/portada.webp" width="1200" height="630">
+    <meta name="google-adsense-account" content="ca-pub-2721417416371812">
+    <meta name="google-site-verification" content="WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M" />
+    <style>
+        p {
+            color: red;
+        }
+    </style>
+</app-head>
+<app-body class="bg-gray-100 text-gray-900 font-sans">
+    <app-root>
+        <app-header>
+            <header class="bg-white shadow relative">
+                <input type="checkbox" id="menu-toggle" class="peer hidden" />
+                <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                    <div class="flex justify-between items-center h-16">
+                        <a href="#" class="flex items-center text-xl font-bold text-yellow-600 gap-2">
+                            <img src="$URL/img/logo.webp" alt="Logo Mis delicias de cocina"
+                                class="h-8 w-8 object-contain" />
+                            Mis delicias de cocina
+                        </a>
+                        <label for="menu-toggle" class="md:hidden cursor-pointer text-gray-600">
+                            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </label>
+                        <ul class="hidden md:flex space-x-6 font-medium">
+                            <li><a href="#" class="hover:text-yellow-600">Inicio</a></li>
+                            <li class="relative group">
+                                <a href="#" class="hover:text-yellow-600">Recetas</a>
+                                <ul
+                                    class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
+                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                        <a href="#">Entrantes</a>
+                                    </li>
+                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                        <a href="#">Platos </a>
+                                    </li>
+                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                        <a href="#">Postres</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#" class="hover:text-yellow-600">Blog</a></li>
+                            <li><a href="#" class="hover:text-yellow-600">Contacto</a></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div
+                    class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
+                    <ul class="flex flex-col gap-2">
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                Entrantes
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                Platos principales
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                Postres
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+        </app-header>
+        <app-index>
+            <h1>Recetas de cocina</h1>
+            <p>Nuestras mejores recetas</p>
+            <p>Esto aparecerá solo en el index.html</p>
+        </app-index>
+        <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06">
+            <app-section-head>
+                <title>Aves de caza</title>
+                <meta name="description" content="Aprende a preparar recetas de aves de caza">
+            </app-section-head>
+            <app-section-header>
+                cabecera de Aves de caza
+            </app-section-header>
+            <app-section-footer>
+                footer de Aves de caza
+            </app-section-footer>
+            <app-section-index>
+                <h1>Recetas de cocina</h1>
+                <p>Nuestras mejores recetas</p>
+                <p>Esto aparecerá solo en el index.html de Aves de caza</p>
+            </app-section-index>
+            <app-subsection name="pollo con patatas">
+                <app-subsection-head>
+                    <title>pollo con patatas</title>
+                    <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
+                </app-subsection-head>
+                <app-subsection-body>
+                    <p>mas html para la subsection de pollo con patatas</p>
+                    <img src="$URL/img/patatas.png">
+                    <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla">
+                        <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                            ng-content de angular</p>
+                    </app-use-template>
+                    <p>mas html para la subsection de pollo con patatas</p>
+                </app-subsection-body>
+            </app-subsection>
+            <app-subsection name="pavo con batatas">
+                <app-subsection-body>
+                    <p>mas html para la subsection de pavo con batatas</p>
+                    <app-use-template ref="item-receta" title="Pavo con batatas" description="bla bla bla">
+                        <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                            ng-content de angular</p>
+                    </app-use-template>
+                    <p>mas html para la subsection de pavo con batatas</p>
+                </app-subsection-body>
+            </app-subsection>
+        </app-section>
+        <app-footer>
+            <footer class="bg-yellow-600 text-white mt-12">
+                <section
+                    class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                        <h3 class="font-semibold mb-2">Sobre Nosotros</h3>
+                        <p>Cocina Fácil comparte recetas sencillas y deliciosas para todos los gustos y niveles.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-2">Enlaces</h3>
+                        <ul class="space-y-1">
+                            <li><a href="#" class="hover:underline">Aviso legal</a></li>
+                            <li><a href="#" class="hover:underline">Política de privacidad</a></li>
+                            <li><a href="#" class="hover:underline">Contacto</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold mb-2">Síguenos</h3>
+                        <ul class="space-y-1">
+                            <li><a href="#" class="hover:underline">Instagram</a></li>
+                            <li><a href="#" class="hover:underline">Facebook</a></li>
+                            <li><a href="#" class="hover:underline">YouTube</a></li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="text-center py-4 text-xs border-t border-white/30">
+                    &copy; 2025 Cocina Fácil. Todos los derechos reservados.
+                </section>
+            </footer>
+        </app-footer>
+    </app-root>
+</app-body>
+<app-templates>
+    <app-template ref="item-receta" data-title data-description>
+        <h2>${title}</h2>
+        <children></children>
+        <p>
+            ${description}
+        </p>
+
+    </app-template>
+</app-templates>

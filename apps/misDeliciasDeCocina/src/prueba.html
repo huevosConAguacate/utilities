@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Receta de patatas al horno paso a paso. Ingredientes, preparación e imagen. Cocina saludable y deliciosa." />
+    <meta name="keywords" content="receta, patatas al horno, cocina, saludable, comida" />
+    <meta name="author" content="Tu Nombre" />
+    <title>Patatas al Horno - Receta Casera</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900 font-sans">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow relative">
+
+        <!-- Mobile menu toggle -->
+        <input type="checkbox" id="menu-toggle" class="peer hidden" />
+
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+            <div class="flex justify-between items-center h-16">
+
+                <a href="#" class="flex items-center text-xl font-bold text-yellow-600 gap-2">
+                    <img src="logo.webp" alt="Logo Mis delicias de cocina" class="h-8 w-8 object-contain" />
+                    Mis delicias de cocina
+                </a>
+
+                <!-- Botón hamburguesa solo visible en móvil -->
+                <label for="menu-toggle" class="md:hidden cursor-pointer text-gray-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </label>
+
+                <!-- Menú en escritorio -->
+                <ul class="hidden md:flex space-x-6 font-medium">
+                    <li><a href="#" class="hover:text-yellow-600">Inicio</a></li>
+                    <li class="relative group">
+                        <a href="#" class="hover:text-yellow-600">Recetas</a>
+                        <ul
+                            class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
+                            <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <a href="#">Entrantes</a>
+                            </li>
+                            <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <a href="#">Platos </a>
+                            </li>
+                            <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 12h14M12 5l7 7-7 7" />
+                                </svg>
+                                <a href="#">Postres</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="hover:text-yellow-600">Blog</a></li>
+                    <li><a href="#" class="hover:text-yellow-600">Contacto</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div
+            class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
+            <ul class="flex flex-col gap-2">
+                <li>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Entrantes
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Platos principales
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                        Postres
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
+        <article>
+            <header class="pb-4 sm:pb-6">
+                <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">Patatas al Horno</h1>
+                <p class="text-gray-600 mt-1 sm:mt-2">Una receta sencilla, sabrosa y saludable.</p>
+            </header>
+
+            <figure class="w-full">
+                <img src="https://source.unsplash.com/800x400/?roasted-potatoes" alt="Patatas al horno"
+                    class="w-full h-auto object-cover" />
+                <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
+                    Imagen referencial de las patatas al horno.
+                </figcaption>
+            </figure>
+
+            <section class="pt-4 sm:pt-6 border-t">
+                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
+                <ul class="list-disc list-inside space-y-1 sm:space-y-2">
+                    <li>4 patatas medianas</li>
+                    <li>2 cucharadas de aceite de oliva</li>
+                    <li>1 cucharadita de pimentón dulce</li>
+                    <li>1 diente de ajo picado</li>
+                    <li>Sal y pimienta al gusto</li>
+                    <li>Romero o tomillo fresco (opcional)</li>
+                </ul>
+            </section>
+
+            <section class="pt-4 sm:pt-6 border-t">
+                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
+                <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
+                    <li>Precalienta el horno a 200°C.</li>
+                    <li>Lava bien las patatas y córtalas en gajos.</li>
+                    <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.</li>
+                    <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
+                    <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
+                    <li>Sirve calientes como acompañamiento o plato principal.</li>
+                </ol>
+            </section>
+        </article>
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="bg-yellow-600 text-white mt-12">
+        <section class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div>
+                <h3 class="font-semibold mb-2">Sobre Nosotros</h3>
+                <p>Cocina Fácil comparte recetas sencillas y deliciosas para todos los gustos y niveles.</p>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-2">Enlaces</h3>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Aviso legal</a></li>
+                    <li><a href="#" class="hover:underline">Política de privacidad</a></li>
+                    <li><a href="#" class="hover:underline">Contacto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-semibold mb-2">Síguenos</h3>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Instagram</a></li>
+                    <li><a href="#" class="hover:underline">Facebook</a></li>
+                    <li><a href="#" class="hover:underline">YouTube</a></li>
+                </ul>
+            </div>
+        </section>
+        <section class="text-center py-4 text-xs border-t border-white/30">
+            &copy; 2025 Cocina Fácil. Todos los derechos reservados.
+        </section>
+    </footer>
+
+</body>
+
+</html>
