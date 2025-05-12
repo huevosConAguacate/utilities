@@ -108,7 +108,29 @@ const clearTemplates = () => {
   unwrapTag("app-use-template");
 }
 
-const getHead = (section, headTag = 'app-head') => {
+const clearForEachSections = () => {
+  const forEachSections = root.getElementsByTagName('app-forEach-section');
+  for (let forEachSection of forEachSections) {
+    let htmlSection = '';
+    const sections = root.getElementsByTagName("app-section");
+    for (let section of sections) {
+      let html = forEachSection.innerHTML;
+      const nameSection = section.getAttribute("name");
+      const pathSection = clearName(nameSection);
+      const values = {
+         nameSection, pathSection,
+        ...section.dataset
+      }
+      for (const key in values) {
+        html = html.replaceAll(`\$\{section.${key}\}`, values[key])
+      }
+      htmlSection += html;
+    }
+    forEachSection.innerHTML = htmlSection;
+  }
+}
+
+const getHead = (section, headTag = 'app-head', sectionPath = '') => {
   let headerData = {};
   const getHeaderData = (element) => {
     const appHead = element.querySelector(headTag);
@@ -116,7 +138,6 @@ const getHead = (section, headTag = 'app-head') => {
     const tagsToAdd = [
       {
         'selector': 'title',
-        'attribute': 'TEXT',
         'data': `
         <title>$VALUE</title>
         <meta property="og:title" content="$VALUE">
@@ -152,8 +173,7 @@ const getHead = (section, headTag = 'app-head') => {
       {
         'selector': 'meta[property="url"]',
         'data': `
-        <link rel="canonical" href="$VALUE">
-        <meta property="og:url" content="$VALUE">`
+        <link rel="canonical" href="$VALUE">`
       }
     ];
     for (const tag of tagsToAdd) {
@@ -163,7 +183,7 @@ const getHead = (section, headTag = 'app-head') => {
       } else if (typeof tag === "object" && tag.selector && tag.data) {
         const el = appHead.querySelector(tag.selector);
         if (el) {
-          const value = tag.attribute === 'TEXT' ? tag.innerHTML : el.getAttribute(tag.attribute ?? 'content');
+          const value = tag.selector === 'title' ? el.innerHTML : el.getAttribute(tag.attribute ?? 'content');
           if (value) {
             headerData[tag.selector] = tag.data.replaceAll(/\$VALUE/g, value);
           }
@@ -199,6 +219,7 @@ const getHead = (section, headTag = 'app-head') => {
       <meta name="twitter:card" content="summary_large_image">
       <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
       <meta property="og:type" content="article">
+      <meta property="og:url" content="${data.url}/${sectionPath}">
       ${strHeaderData}
       <!-- 📘 Datos estructurados -->
       <script type="application/ld+json">
@@ -261,20 +282,22 @@ const generatePages = () => {
   const sections = root.getElementsByTagName("app-section");
   for (let section of sections) {
     const nameSection = section.getAttribute("name");
+    const sectionPath = clearName(nameSection);
     const subSections = section.getElementsByTagName("app-subsection");
     const sectionheader = section.querySelector("app-section-header")?.innerHTML ?? '';
     const sectionFooter = section.querySelector("app-section-footer")?.innerHTML ?? '';
     const sectionIndex = section.querySelector("app-section-index")?.innerHTML ?? '';
     for (let subSection of subSections) {
       const nameSubSection = subSection.getAttribute("name");
-      const htmlHeader = getHead(subSection, 'app-subsection-head');
+      const subSectionPath = clearName([nameSection, nameSubSection].join('/'));
+      const htmlHeader = getHead(subSection, 'app-subsection-head', subSectionPath);
       const htmlSubSection = subSection.querySelector('app-subsection-body').innerHTML;
       const htmlFinal = getPrincipalWrapper(sectionheader + htmlSubSection + sectionFooter);
-      createFile(htmlHeader + htmlFinal, nameSection, nameSubSection, 'index.html');
+      createFile(htmlHeader + htmlFinal, subSectionPath, 'index.html');
     }
-    const htmlHeader = getHead(section, 'app-section-head');
+    const htmlHeader = getHead(section, 'app-section-head', sectionPath);
     const htmlFinal = getPrincipalWrapper(sectionheader + sectionIndex + sectionFooter);
-    createFile(htmlHeader + htmlFinal, nameSection, 'index.html');
+    createFile(htmlHeader + htmlFinal, sectionPath, 'index.html');
   }
 }
 
@@ -333,7 +356,7 @@ const generateSitemaps = () => {
 }
 
 const generateAds = () => {
-    createFile(`google.com, ${data.adsenseAccount}, DIRECT, f08c47fec0942fa0`, 'ads.txt');
+  createFile(`google.com, ${data.adsenseAccount}, DIRECT, f08c47fec0942fa0`, 'ads.txt');
 }
 
 const generateSEOFiles = () => {
@@ -346,6 +369,7 @@ export const generateDist = () => {
   setAttributeForTags('img', 'loading', 'lazy');
   const html = root.innerHTML.replaceAll("$URL", data.url);
   root.innerHTML = html;
+  clearForEachSections();
   clearTemplates();
   generatePages();
   generateSEOFiles();

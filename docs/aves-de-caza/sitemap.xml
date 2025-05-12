@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+    xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/</loc></url><url>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/pollo-con-patatas/</loc><image:image>
+      <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/patatas.png</image:loc>
+    </image:image><image:image>
+      <image:loc>https://source.unsplash.com/800x400/?roasted-potatoes</image:loc>
+    </image:image></url><url>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/pavo-con-batatas/</loc><image:image>
+      <image:loc>https://source.unsplash.com/800x400/?roasted-potatoes</image:loc>
+    </image:image></url>
+</urlset>

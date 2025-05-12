@@ -14,6 +14,15 @@ if (process.argv.length < 3) throwError('❌ Debes proporcionar el nombre de la 
 const args = process.argv.slice(2);
 const appName = args[0];
 
+let docsPath = null;
+
+if (args.length > 1) {
+  const uploadDocs = args[1];
+  if (uploadDocs === 'docs') {
+    docsPath = path.resolve(__dirname, '../docs');
+  }
+}
+
 // Ruta base a la app
 const APP_PATH = path.resolve(__dirname, '../apps', appName);
 
@@ -79,6 +88,9 @@ exec(`cd ${DIST_STYLES_DIR} && tailwindcssWithoutNode -i ./styles.css -o ./style
   }
   if (stderr) {
     // console.error(`Stderr: ${stderr}`);
+    if (docsPath) {
+      copyRecursiveSync(DIST_DIR, docsPath);
+    }
     console.log('\n✅ Build completado con éxito. Archivos generados en la carpeta /dist');
     return;
   }

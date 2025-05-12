@@ -1,7 +1,7 @@
 <app-head>
     <link rel="icon" type="image/x-icon" href="img/icono.ico">
     <title>Página de recetas</title>
-    <meta property="url" content="file:///D:/huevosConAguacate/github/utilities/apps/misDeliciasDeCocina/dist">
+    <meta property="url" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist">
     <meta name="description" content="Página de recetas">
     <meta name="author" content="Guille">
     <!-- <meta property="article:author" content="Guille">
@@ -41,30 +41,16 @@
                                 <a href="#" class="hover:text-yellow-600">Recetas</a>
                                 <ul
                                     class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
-                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
-                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 12h14M12 5l7 7-7 7" />
-                                        </svg>
-                                        <a href="#">Entrantes</a>
-                                    </li>
-                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
-                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 12h14M12 5l7 7-7 7" />
-                                        </svg>
-                                        <a href="#">Platos </a>
-                                    </li>
-                                    <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
-                                        <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 12h14M12 5l7 7-7 7" />
-                                        </svg>
-                                        <a href="#">Postres</a>
-                                    </li>
+                                    <app-forEach-section>
+                                        <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                                            <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M5 12h14M12 5l7 7-7 7" />
+                                            </svg>
+                                            <a href="/${section.pathSection}">${section.nameSection}</a>
+                                        </li>
+                                    </app-forEach-section>
                                 </ul>
                             </li>
                             <li><a href="#" class="hover:text-yellow-600">Blog</a></li>
@@ -75,36 +61,18 @@
                 <div
                     class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
                     <ul class="flex flex-col gap-2">
-                        <li>
-                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
-                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                                Entrantes
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
-                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                                Platos principales
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
-                                <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 12h14M12 5l7 7-7 7" />
-                                </svg>
-                                Postres
-                            </a>
-                        </li>
+                        <app-forEach-section>
+                            <li>
+                                <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                    <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                    ${section.nameSection}
+                                </a>
+                            </li>
+                        </app-forEach-section>
                     </ul>
                 </div>
             </header>
@@ -114,7 +82,7 @@
             <p>Nuestras mejores recetas</p>
             <p>Esto aparecerá solo en el index.html</p>
         </app-index>
-        <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06">
+        <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
             <app-section-head>
                 <title>Aves de caza</title>
                 <meta name="description" content="Aprende a preparar recetas de aves de caza">
@@ -190,11 +158,54 @@
 </app-body>
 <app-templates>
     <app-template ref="item-receta" data-title data-description>
-        <h2>${title}</h2>
-        <children></children>
-        <p>
-            ${description}
-        </p>
+        <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
+            <h2>${title}</h2>
+            <children></children>
+            <p>
+                ${description}
+            </p>
+
+            <article>
+                <header class="pb-4 sm:pb-6">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
+                    <p class="text-gray-600 mt-1 sm:mt-2">${description}</p>
+                </header>
+
+                <figure class="w-full">
+                    <img src="https://source.unsplash.com/800x400/?roasted-potatoes" alt="Patatas al horno"
+                        class="w-full h-auto object-cover" />
+                    <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
+                        Imagen referencial de las patatas al horno.
+                    </figcaption>
+                </figure>
+
+                <section class="pt-4 sm:pt-6 border-t">
+                    <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
+                    <ul class="list-disc list-inside space-y-1 sm:space-y-2">
+                        <li>4 patatas medianas</li>
+                        <li>2 cucharadas de aceite de oliva</li>
+                        <li>1 cucharadita de pimentón dulce</li>
+                        <li>1 diente de ajo picado</li>
+                        <li>Sal y pimienta al gusto</li>
+                        <li>Romero o tomillo fresco (opcional)</li>
+                    </ul>
+                </section>
+
+                <section class="pt-4 sm:pt-6 border-t">
+                    <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
+                    <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
+                        <li>Precalienta el horno a 200°C.</li>
+                        <li>Lava bien las patatas y córtalas en gajos.</li>
+                        <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.
+                        </li>
+                        <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
+                        <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
+                        <li>Sirve calientes como acompañamiento o plato principal.</li>
+                    </ol>
+                </section>
+            </article>
+        </main>
+
 
     </app-template>
 </app-templates>
