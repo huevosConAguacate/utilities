@@ -36,9 +36,9 @@
                             </svg>
                         </label>
                         <ul class="hidden md:flex space-x-6 font-medium">
-                            <li><a href="#" class="hover:text-yellow-600">Inicio</a></li>
+                            <li><a href="$URL" class="hover:text-yellow-600">Inicio</a></li>
                             <li class="relative group">
-                                <a href="#" class="hover:text-yellow-600">Recetas</a>
+                                <span class="hover:text-yellow-600 h-full flex items-center">Recetas</span>
                                 <ul
                                     class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
                                     <app-forEach-section>
@@ -48,13 +48,11 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M5 12h14M12 5l7 7-7 7" />
                                             </svg>
-                                            <a href="/${section.pathSection}">${section.nameSection}</a>
+                                            <a href="$URL/${section.path}">${section.name}</a>
                                         </li>
                                     </app-forEach-section>
                                 </ul>
                             </li>
-                            <li><a href="#" class="hover:text-yellow-600">Blog</a></li>
-                            <li><a href="#" class="hover:text-yellow-600">Contacto</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -63,13 +61,14 @@
                     <ul class="flex flex-col gap-2">
                         <app-forEach-section>
                             <li>
-                                <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                <a href="$URL/${section.path}"
+                                    class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
                                     <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 12h14M12 5l7 7-7 7" />
                                     </svg>
-                                    ${section.nameSection}
+                                    ${section.name}
                                 </a>
                             </li>
                         </app-forEach-section>
@@ -94,11 +93,13 @@
                 footer de Aves de caza
             </app-section-footer>
             <app-section-index>
-                <h1>Recetas de cocina</h1>
-                <p>Nuestras mejores recetas</p>
                 <p>Esto aparecerá solo en el index.html de Aves de caza</p>
+                <app-forEach-subsection section="Aves de caza">
+                    <p>${subsection.name}</p>
+                    <p>${subsection.path}</p>
+                </app-forEach-subsection>
             </app-section-index>
-            <app-subsection name="pollo con patatas">
+            <app-subsection name="pollo con patatas" data-img="pollo.webp">
                 <app-subsection-head>
                     <title>pollo con patatas</title>
                     <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
@@ -113,7 +114,7 @@
                     <p>mas html para la subsection de pollo con patatas</p>
                 </app-subsection-body>
             </app-subsection>
-            <app-subsection name="pavo con batatas">
+            <app-subsection name="pavo con batatas" data-img="pavo.webp">
                 <app-subsection-body>
                     <p>mas html para la subsection de pavo con batatas</p>
                     <app-use-template ref="item-receta" title="Pavo con batatas" description="bla bla bla">

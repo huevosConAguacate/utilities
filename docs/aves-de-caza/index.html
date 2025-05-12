@@ -70,22 +70,20 @@
                             </svg>
                         </label>
                         <ul class="hidden md:flex space-x-6 font-medium">
-                            <li><a href="#" class="hover:text-yellow-600">Inicio</a></li>
+                            <li><a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" class="hover:text-yellow-600">Inicio</a></li>
                             <li class="relative group">
-                                <a href="#" class="hover:text-yellow-600">Recetas</a>
+                                <span class="hover:text-yellow-600 h-full flex items-center">Recetas</span>
                                 <ul class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
                                     <app-foreach-section>
                                         <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
                                             <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
                                             </svg>
-                                            <a href="/aves-de-caza">Aves de caza</a>
+                                            <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza">Aves de caza</a>
                                         </li>
                                     </app-foreach-section>
                                 </ul>
                             </li>
-                            <li><a href="#" class="hover:text-yellow-600">Blog</a></li>
-                            <li><a href="#" class="hover:text-yellow-600">Contacto</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -93,7 +91,7 @@
                     <ul class="flex flex-col gap-2">
                         <app-foreach-section>
                             <li>
-                                <a href="#" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
+                                <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
                                     <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
                                     </svg>
@@ -107,9 +105,14 @@
         
                 cabecera de Aves de caza
             
-                <h1>Recetas de cocina</h1>
-                <p>Nuestras mejores recetas</p>
                 <p>Esto aparecerá solo en el index.html de Aves de caza</p>
+                <app-foreach-subsection section="Aves de caza">
+                    <p>pollo con patatas</p>
+                    <p>pollo-con-patatas</p>
+                
+                    <p>pavo con batatas</p>
+                    <p>pavo-con-batatas</p>
+                </app-foreach-subsection>
             
                 footer de Aves de caza
             

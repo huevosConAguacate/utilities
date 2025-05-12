@@ -118,7 +118,7 @@ const clearForEachSections = () => {
       const nameSection = section.getAttribute("name");
       const pathSection = clearName(nameSection);
       const values = {
-         nameSection, pathSection,
+        name: nameSection, path: pathSection,
         ...section.dataset
       }
       for (const key in values) {
@@ -127,6 +127,37 @@ const clearForEachSections = () => {
       htmlSection += html;
     }
     forEachSection.innerHTML = htmlSection;
+  }
+}
+
+const clearForEachSubsections = () => {
+  const forEachSubsections = root.getElementsByTagName('app-forEach-subsection');
+  for (let forEachSubsection of forEachSubsections) {
+    let html = '';
+    const forEachSubsectionName = forEachSubsection.getAttribute('section');
+    if (!forEachSubsectionName) continue;
+    const sections = root.getElementsByTagName('app-section');
+    for (let section of sections) {
+      const sectionName = section.getAttribute('name');
+      if (sectionName === forEachSubsectionName) {
+        const subsections = section.getElementsByTagName('app-subsection');
+        for (let subsection of subsections) {
+          let htmlSubsection = forEachSubsection.innerHTML;
+          const nameSubsection = subsection.getAttribute("name");
+          const pathSubsection = clearName(nameSubsection);
+          const values = {
+            name: nameSubsection, path: pathSubsection,
+            ...subsection.dataset
+          }
+          for (const key in values) {
+            htmlSubsection = htmlSubsection.replaceAll(`\$\{subsection.${key}\}`, values[key])
+          }
+          html += htmlSubsection;
+        }
+        break;
+      }
+    }
+    forEachSubsection.innerHTML = html;
   }
 }
 
@@ -370,6 +401,7 @@ export const generateDist = () => {
   const html = root.innerHTML.replaceAll("$URL", data.url);
   root.innerHTML = html;
   clearForEachSections();
+  clearForEachSubsections();
   clearTemplates();
   generatePages();
   generateSEOFiles();
