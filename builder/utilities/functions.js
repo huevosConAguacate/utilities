@@ -27,7 +27,6 @@ export const setAppContext = (doc, htmlRoot, dir) => {
 
 export const copyRecursiveSync = (src, dest) => {
   if (!fs.existsSync(src)) return;
-
   const stats = fs.statSync(src);
   if (stats.isDirectory()) {
     if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
@@ -134,8 +133,14 @@ const clearForEachSubsections = () => {
   const forEachSubsections = root.getElementsByTagName('app-forEach-subsection');
   for (let forEachSubsection of forEachSubsections) {
     let html = '';
-    const forEachSubsectionName = forEachSubsection.getAttribute('section');
-    if (!forEachSubsectionName) continue;
+    let forEachSubsectionName = forEachSubsection.getAttribute('section');
+    if (!forEachSubsectionName) {
+      let parent = forEachSubsection.parentElement;
+      while (parent && parent.tagName.toLowerCase() !== 'app-section') {
+        parent = parent.parentElement;
+      }
+      if (parent) forEachSubsectionName = parent.getAttribute('name');
+    }
     const sections = root.getElementsByTagName('app-section');
     for (let section of sections) {
       const sectionName = section.getAttribute('name');
@@ -143,7 +148,7 @@ const clearForEachSubsections = () => {
         const subsections = section.getElementsByTagName('app-subsection');
         for (let subsection of subsections) {
           let htmlSubsection = forEachSubsection.innerHTML;
-          const nameSubsection = subsection.getAttribute("name");
+          const nameSubsection = subsection.getAttribute('name');
           const pathSubsection = clearName(nameSubsection);
           const values = {
             name: nameSubsection, path: pathSubsection,
@@ -288,10 +293,10 @@ const getHead = (section, headTag = 'app-head', sectionPath = '') => {
 }
 
 const getPrincipalWrapper = (content) => {
-  const appBody = root.querySelector("app-body");
-  const appRoot = appBody.querySelector("app-root");
-  const appHeader = appRoot.querySelector("app-header")?.innerHTML ?? '';
-  const appFooter = appRoot.querySelector("app-footer")?.innerHTML ?? '';
+  const appBody = root.querySelector('app-body');
+  const appRoot = appBody.querySelector('app-root');
+  const appHeader = appRoot.querySelector('app-header')?.innerHTML ?? '';
+  const appFooter = appRoot.querySelector('app-footer')?.innerHTML ?? '';
 
   const bodyAttributes = [...appBody.attributes]
     .map(attr => `${attr.name}="${attr.value}"`)
@@ -302,24 +307,24 @@ const getPrincipalWrapper = (content) => {
 }
 
 const generateIndex = () => {
-  const appBody = root.querySelector("app-body");
-  const appRoot = appBody.querySelector("app-root");
-  const appIndex = appRoot.querySelector("app-index")?.innerHTML ?? '';
+  const appBody = root.querySelector('app-body');
+  const appRoot = appBody.querySelector('app-root');
+  const appIndex = appRoot.querySelector('app-index')?.innerHTML ?? '';
   createFile(getHead(null) + getPrincipalWrapper(appIndex), 'index.html');
 }
 
 const generatePages = () => {
   generateIndex();
-  const sections = root.getElementsByTagName("app-section");
+  const sections = root.getElementsByTagName('app-section');
   for (let section of sections) {
-    const nameSection = section.getAttribute("name");
+    const nameSection = section.getAttribute('name');
     const sectionPath = clearName(nameSection);
-    const subSections = section.getElementsByTagName("app-subsection");
-    const sectionheader = section.querySelector("app-section-header")?.innerHTML ?? '';
-    const sectionFooter = section.querySelector("app-section-footer")?.innerHTML ?? '';
-    const sectionIndex = section.querySelector("app-section-index")?.innerHTML ?? '';
+    const subSections = section.getElementsByTagName('app-subsection');
+    const sectionheader = section.querySelector('app-section-header')?.innerHTML ?? '';
+    const sectionFooter = section.querySelector('app-section-footer')?.innerHTML ?? '';
+    const sectionIndex = section.querySelector('app-section-index')?.innerHTML ?? '';
     for (let subSection of subSections) {
-      const nameSubSection = subSection.getAttribute("name");
+      const nameSubSection = subSection.getAttribute('name');
       const subSectionPath = clearName([nameSection, nameSubSection].join('/'));
       const htmlHeader = getHead(subSection, 'app-subsection-head', subSectionPath);
       const htmlSubSection = subSection.querySelector('app-subsection-body').innerHTML;
@@ -400,9 +405,9 @@ export const generateDist = () => {
   setAttributeForTags('img', 'loading', 'lazy');
   const html = root.innerHTML.replaceAll("$URL", data.url);
   root.innerHTML = html;
+  clearTemplates();
   clearForEachSections();
   clearForEachSubsections();
-  clearTemplates();
   generatePages();
   generateSEOFiles();
 }
