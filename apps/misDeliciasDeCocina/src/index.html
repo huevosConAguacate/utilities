@@ -1,16 +1,66 @@
+<app-vars>
+    <app-var injectValue="ACTUAL_PATH" />
+    <app-var name="TITLE" value="Recetas de Cocina | Ideas Fáciles y Saludables" />
+    <app-var name="DESCRIPTION"
+        value="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!" />
+    <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+    <app-var name="PUBLISHER" value="" />
+</app-vars>
 <app-head>
-    <link rel="icon" type="image/x-icon" href="img/icono.ico">
-    <title>Página de recetas</title>
-    <meta property="url" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist">
-    <meta name="description" content="Página de recetas">
+
+    <!-- Icono y título -->
+    <link rel="icon" type="image/x-icon" href="$URL/img/logo.ico">
+    <title>$TITLE</title>
+
+    <!-- Metadatos generales -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="language" content="es">
+    <meta name="title" content="$TITLE" />
+    <meta name="description" content="$DESCRIPTION">
     <meta name="author" content="Guille">
-    <!-- <meta property="article:author" content="Guille">
-    <meta property="article:publisher" content="https://huevosconaguacate.github.io/gardenOfSilentEchoes/">
-    <meta property="published_time" content="2025-05-01T12:00:00+00:00"> -->
-    <meta property="updated_time" content="2025-05-06T16:02:17+00:00">
-    <meta property="image" content="img/portada.webp" width="1200" height="630">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="google-adsense-account" content="ca-pub-2721417416371812">
     <meta name="google-site-verification" content="WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M" />
+
+    <!-- Canonical y URL -->
+    <link rel="canonical" href="$URL">
+    <meta property="url" content="$URL">
+    <meta property="og:url" content="$URL/$ACTUAL_PATH">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="$TITLE">
+    <meta property="og:site_name" content="$TITLE">
+    <meta property="og:locale" content="es_ES">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="$DESCRIPTION">
+    <meta property="og:image" content="$URL/img/portada.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:updated_time" content="$VALUE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="$TITLE">
+    <meta name="twitter:description" content="$DESCRIPTION">
+
+    <!-- Artículo / autor -->
+    <meta property="article:author" content="Guille">
+    <!-- <meta property="article:author" content="Guille">
+<meta property="article:publisher" content="https://huevosconaguacate.github.io/gardenOfSilentEchoes/">
+<meta property="article:published_time" content="2025-05-01T12:00:00+00:00"> -->
+    <meta property="article:modified_time" content="$VALUE">
+
+    <!-- Scripts y estilos -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2721417416371812"
+      crossorigin="anonymous"></script> -->
+    <script src="$URL/scripts/script.js" defer></script>
+    <link rel="stylesheet" href="$URL/styles/tailwind.min.css">
+    <link rel="stylesheet" href="$URL/styles/styles.min.css">
+
+
 </app-head>
 <app-body class="bg-gray-100 text-gray-900 font-sans">
     <app-root>
@@ -30,7 +80,8 @@
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </label>
-                        <ul class="hidden md:flex font-medium h-16">
+                        <ul class="hidden md:flex font-medium h-16" itemscope
+                            itemtype="https://schema.org/BreadcrumbList">
                             <app-use-template ref="menu-item" label="Inicio" url=""></app-use-template>
                             <app-use-template ref="menu-dropdown-item" label="Recetas">
                                 <app-forEach-section sectionGroup="comida">
@@ -51,7 +102,7 @@
                     </div>
                 </nav>
                 <div
-                    class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
+                    class="absolute p-3 top-16 left-0 w-[280px] h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
                     <ul class="flex flex-col gap-2">
                         <app-forEach-section sectionGroup="comida">
                             <li>
@@ -70,65 +121,72 @@
                 </div>
             </header>
         </app-header>
+        <app-layout>
+            <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
+                <app-children></app-children>
+            </main>
+        </app-layout>
         <app-index>
-            <h1>Recetas de cocina</h1>
-            <p>Nuestras mejores recetas</p>
-            <p>Esto aparecerá solo en el index.html</p>
+            <app-use-template ref="header" title="Recetas de cocina caseras y rápidas explicadas paso a paso"
+                body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
         </app-index>
-        <app-section name="Aves de caza" sectionGroup="comida" lastmod="2025-05-25T19:44:06" data-icon="aves">
-            <app-section-head>
-                <title>Aves de caza</title>
-                <meta name="description" content="Aprende a preparar recetas de aves de caza">
-            </app-section-head>
-            <app-section-header>
-                cabecera de Aves de caza
-            </app-section-header>
-            <app-section-footer>
-                footer de Aves de caza
-            </app-section-footer>
-            <app-section-index>
-                <p>Esto aparecerá solo en el index.html de Aves de caza</p>
-                <app-forEach-subsection>
-                    <p>${subsection.name}</p>
-                    <p>${subsection.path}</p>
-                </app-forEach-subsection>
-            </app-section-index>
-            <app-subsection name="pollo con patatas" data-img="pollo.webp">
-                <app-subsection-head>
-                    <title>pollo con patatas</title>
-                    <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
-                </app-subsection-head>
-                <app-subsection-body>
-                    <p>mas html para la subsection de pollo con patatas</p>
-                    <img src="$URL/img/patatas.png">
-                    <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla"
-                        img="pollo-con-patatas-al-horno">
-                        <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
-                            ng-content de angular</p>
-                    </app-use-template>
-                    <p>mas html para la subsection de pollo con patatas</p>
-                </app-subsection-body>
-            </app-subsection>
-            <app-subsection name="pavo con batatas" data-img="pavo.webp">
-                <app-subsection-body>
-                    <p>mas html para la subsection de pavo con batatas</p>
-                    <app-use-template ref="item-receta" title="Pavo con batatas" description="bla bla bla">
-                        <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
-                            ng-content de angular</p>
-                    </app-use-template>
-                    <p>mas html para la subsection de pavo con batatas</p>
-                </app-subsection-body>
-            </app-subsection>
-        </app-section>
-        <app-section name="prueba" sectionGroup="prueba" lastmod="2025-05-25T19:44:06" data-icon="aves">
-            <app-section-head>
-                <title>Prueba</title>
-                <meta name="description" content="Aprende a preparar recetas de aves de caza">
-            </app-section-head>
-            <app-section-index>
-                seccion de prueba
-            </app-section-index>
-        </app-section>
+        <app-section-group name="comida">
+            <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
+                <app-section-head>
+                    <title>$TITLE | Aves de caza</title>
+                </app-section-head>
+                <app-section-header>
+                    cabecera de Aves de caza
+                </app-section-header>
+                <app-section-footer>
+                    footer de Aves de caza
+                </app-section-footer>
+                <app-section-index>
+                    <p>Esto aparecerá solo en el index.html de Aves de caza</p>
+                    <app-forEach-subsection>
+                        <p>${subsection.name}</p>
+                        <p>${subsection.path}</p>
+                    </app-forEach-subsection>
+                </app-section-index>
+                <app-subsection name="pollo con patatas" data-img="pollo.webp">
+                    <app-subsection-head>
+                        <title>pollo con patatas</title>
+                        <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
+                    </app-subsection-head>
+                    <app-subsection-body>
+                        <p>mas html para la subsection de pollo con patatas</p>
+                        <img src="$URL/img/patatas.png">
+                        <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla"
+                            img="pollo-con-patatas-al-horno">
+                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                                ng-content de angular</p>
+                        </app-use-template>
+                        <p>mas html para la subsection de pollo con patatas</p>
+                    </app-subsection-body>
+                </app-subsection>
+                <app-subsection name="pavo con batatas" data-img="pavo.webp">
+                    <app-subsection-body>
+                        <p>mas html para la subsection de pavo con batatas</p>
+                        <app-use-template ref="item-receta" title="Pavo con batatas" description="bla bla bla">
+                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
+                                ng-content de angular</p>
+                        </app-use-template>
+                        <p>mas html para la subsection de pavo con batatas</p>
+                    </app-subsection-body>
+                </app-subsection>
+            </app-section>
+        </app-section-group>
+        <app-section-group name="prueba">
+            <app-section name="prueba" lastmod="2025-05-25T19:44:06" data-icon="aves">
+                <app-section-head>
+                    <title>Prueba</title>
+                    <meta name="description" content="Aprende a preparar recetas de aves de caza">
+                </app-section-head>
+                <app-section-index>
+                    seccion de prueba
+                </app-section-index>
+            </app-section>
+        </app-section-group>
         <app-footer>
             <footer class="bg-yellow-600 text-white mt-12">
                 <section
@@ -163,16 +221,26 @@
 </app-body>
 <app-templates>
 
+    <app-template ref="header" data-title data-body>
+        <header class="pb-4 sm:pb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
+            <p class="text-gray-600 mt-1 sm:mt-2">${body}</p>
+        </header>
+    </app-template>
+
     <app-template ref="menu-item" data-label data-url>
-        <li class="h-full flex items-center">
-            <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600">${label}</a>
+        <li class="h-full flex items-center" itemprop="itemListElement" itemscope
+            itemtype="https://schema.org/ListItem">
+            <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600" itemprop="item"><span
+                    itemprop="name">${label}</span></a>
         </li>
     </app-template>
 
     <app-template ref="menu-dropdown-item" data-label>
-        <li class="relative group h-full flex items-center">
+        <li class="relative group h-full flex items-center" itemprop="itemListElement" itemscope
+            itemtype="https://schema.org/ListItem">
             <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
-                ${label}
+                <span itemprop="name">${label}</span>
                 <!-- Flecha que rota al hacer hover -->
                 <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,53 +248,54 @@
                 </svg>
                 <ul
                     class="absolute top-full right-0 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 ease-out transform grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
-                    <children></children>
+                    <app-children></app-children>
                 </ul>
             </span>
         </li>
     </app-template>
 
     <app-template ref="item-receta" data-title data-description data-img>
-        <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
-            <article itemscope itemtype="https://schema.org/NewsArticle">
-                <header class="pb-4 sm:pb-6">
-                    <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
-                    <p class="text-gray-600 mt-1 sm:mt-2" itemprop="articleBody">${description}</p>
-                </header>
-                <figure class="w-full">
-                    <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="Patatas al horno"
-                        class="w-full h-auto object-cover" />
-                    <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
-                        Imagen referencial de las patatas al horno.
-                    </figcaption>
-                </figure>
 
-                <section class="pt-4 sm:pt-6 border-t">
-                    <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
-                    <ul class="list-disc list-inside space-y-1 sm:space-y-2">
-                        <li>4 patatas medianas</li>
-                        <li>2 cucharadas de aceite de oliva</li>
-                        <li>1 cucharadita de pimentón dulce</li>
-                        <li>1 diente de ajo picado</li>
-                        <li>Sal y pimienta al gusto</li>
-                        <li>Romero o tomillo fresco (opcional)</li>
-                    </ul>
-                </section>
+        <article itemscope itemtype="https://schema.org/NewsArticle">
 
-                <section class="pt-4 sm:pt-6 border-t">
-                    <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
-                    <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
-                        <li>Precalienta el horno a 200°C.</li>
-                        <li>Lava bien las patatas y córtalas en gajos.</li>
-                        <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.
-                        </li>
-                        <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
-                        <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
-                        <li>Sirve calientes como acompañamiento o plato principal.</li>
-                    </ol>
-                </section>
-            </article>
-        </main>
+            <header class="pb-4 sm:pb-6">
+                <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
+                <p class="text-gray-600 mt-1 sm:mt-2" itemprop="articleBody">${description}</p>
+            </header>
+
+            <figure class="w-full">
+                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="Patatas al horno"
+                    class="w-full h-auto object-cover" />
+                <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
+                    Imagen referencial de las patatas al horno.
+                </figcaption>
+            </figure>
+
+            <section class="pt-4 sm:pt-6 border-t">
+                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
+                <ul class="list-disc list-inside space-y-1 sm:space-y-2">
+                    <li>4 patatas medianas</li>
+                    <li>2 cucharadas de aceite de oliva</li>
+                    <li>1 cucharadita de pimentón dulce</li>
+                    <li>1 diente de ajo picado</li>
+                    <li>Sal y pimienta al gusto</li>
+                    <li>Romero o tomillo fresco (opcional)</li>
+                </ul>
+            </section>
+
+            <section class="pt-4 sm:pt-6 border-t">
+                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
+                <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
+                    <li>Precalienta el horno a 200°C.</li>
+                    <li>Lava bien las patatas y córtalas en gajos.</li>
+                    <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.
+                    </li>
+                    <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
+                    <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
+                    <li>Sirve calientes como acompañamiento o plato principal.</li>
+                </ol>
+            </section>
+        </article>
 
 
     </app-template>

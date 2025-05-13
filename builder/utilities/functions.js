@@ -79,18 +79,29 @@ const createFile = (content, ...paths) => {
     paths[i] = clearName(p)
     i++;
   }
+  content = content.replaceAll(`\$ACTUAL_PATH`, paths.length ? paths[0] : '');
   const outputPath = path.join(distDir, ...paths);
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, content, 'utf-8');
 }
 
+const clearVars = () => {
+  const vars = root.querySelector('app-vars')?.getElementsByTagName('app-var') ?? [];
+  for (let htmlVar of vars) {
+    const name = htmlVar.getAttribute('name')?.toUpperCase();
+    const value = htmlVar.getAttribute('value');
+    if (!name || value === null) continue;
+    root.innerHTML = root.innerHTML.replaceAll(`\$${name}`, value);
+  }
+}
+
 const clearTemplates = () => {
-  const templates = root.querySelector("app-templates").getElementsByTagName("app-template");
-  const useTemplates = root.getElementsByTagName("app-use-template");
+  const templates = root.querySelector('app-templates')?.getElementsByTagName('app-template') ?? [];
+  const useTemplates = root.getElementsByTagName('app-use-template');
   for (let useTemplate of useTemplates) {
-    const useRefTemplate = useTemplate.getAttribute("ref");
+    const useRefTemplate = useTemplate.getAttribute('ref');
     for (let template of templates) {
-      const refTemplate = template.getAttribute("ref");
+      const refTemplate = template.getAttribute('ref');
       if (refTemplate === useRefTemplate) {
         let finalTemplate = template.innerHTML;
         const children = useTemplate.innerHTML;
@@ -99,21 +110,25 @@ const clearTemplates = () => {
           finalTemplate = finalTemplate.replaceAll(`\$\{${key}\}`, value)
         }
         useTemplate.innerHTML = finalTemplate;
-        useTemplate.innerHTML = finalTemplate.replaceAll("<children></children>", children);
+        useTemplate.innerHTML = finalTemplate.replaceAll('<app-children></app-children>', children);
         break;
       }
     }
   }
-  unwrapTag("app-use-template");
+  unwrapTag('app-use-template');
 }
 
 const clearForEachSections = () => {
   const forEachSections = root.getElementsByTagName('app-forEach-section');
   for (let forEachSection of forEachSections) {
     let htmlSection = '';
-    const sectionGroup = forEachSection.getAttribute('sectionGroup');
+    let sectionGroup = forEachSection.getAttribute('sectionGroup');
     const sections = root.getElementsByTagName('app-section');
     for (let section of sections) {
+      const parent = section.parentElement;
+      if (!section.getAttribute('sectionGroup') && parent?.tagName.toLowerCase() === 'app-section-group') {
+        section.setAttribute('sectionGroup', parent?.getAttribute('name'))
+      }
       if (sectionGroup && sectionGroup !== section.getAttribute('sectionGroup')) continue;
       let html = forEachSection.innerHTML;
       const nameSection = section.getAttribute('name');
@@ -168,79 +183,89 @@ const clearForEachSubsections = () => {
   }
 }
 
-const getHead = (section, headTag = 'app-head', sectionPath = '') => {
+const getHead = (section, headTag, sectionPath = '') => {
   let headerData = {};
-  const getHeaderData = (element) => {
-    const appHead = element.querySelector(headTag);
-    if (!appHead) return;
-    const tagsToAdd = [
-      {
-        'selector': 'title',
-        'data': `
-        <title>$VALUE</title>
-        <meta property="og:title" content="$VALUE">
-        <meta name="twitter:title" content="$VALUE">
-        <meta property="og:site_name" content="$VALUE">
-      `
-      },
-      'link[rel="icon"]',
-      'meta[name="google-adsense-account"]',
-      'meta[name="google-site-verification"]',
-      'meta[name="author"]',
-      'meta[property="article:author"]',
-      {
-        'selector': 'meta[name="description"]',
-        'data': `
-        <meta name="description"
-        content="$VALUE">
-        <meta property="og:description" content="$VALUE">
-        <meta name="twitter:description" content="$VALUE">
-      `
-      },
-      {
-        'selector': 'meta[property="published_time"]',
-        'data': `
-        <meta property="article:published_time" content="$VALUE">`
-      },
-      {
-        'selector': 'meta[property="updated_time"]',
-        'data': `
-        <meta property="article:modified_time" content="$VALUE">
-        <meta property="og:updated_time" content="$VALUE">`
-      },
-      {
-        'selector': 'meta[property="url"]',
-        'data': `
-        <link rel="canonical" href="$VALUE">`
-      }
-    ];
-    for (const tag of tagsToAdd) {
-      if (typeof tag === "string") {
-        const el = appHead.querySelector(tag);
-        if (el) headerData[tag] = el.outerHTML;
-      } else if (typeof tag === "object" && tag.selector && tag.data) {
-        const el = appHead.querySelector(tag.selector);
-        if (el) {
-          const value = tag.selector === 'title' ? el.innerHTML : el.getAttribute(tag.attribute ?? 'content');
-          if (value) {
-            headerData[tag.selector] = tag.data.replaceAll(/\$VALUE/g, value);
-          }
-        }
-      }
-    }
-    const imageMeta = appHead.querySelector('meta[property="image"]');
-    if (imageMeta) {
-      const url = imageMeta.getAttribute('content');
-      const width = imageMeta.getAttribute('width');
-      const height = imageMeta.getAttribute('height');
-      headerData['og:image'] = `<meta property="og:image" content="${url}">`;
-      headerData['og:image:width'] = `<meta property="og:image:width" content="${width}">`;
-      headerData['og:image:height'] = `<meta property="og:image:height" content="${height}">`;
-      headerData['twitter:image'] = `<meta name="twitter:image" content="${url}">`;
-    }
-  }
-  getHeaderData(root);
-  if (section) getHeaderData(section);
+  const appHead = root.querySelector('app-head');
+  return `
+<!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+${appHead?.innerHTML ?? ''}
+  </head>
+  ` ;
+  // const getHeaderData = (element) => {
+  //   const appHead = element.querySelector(headTag);
+  //   if (!appHead) return;
+  //   const tagsToAdd = [
+  //     {
+  //       'selector': 'title',
+  //       'data': `
+  //       <title>$VALUE</title>
+  //       <meta name="title" content="$VALUE"/>
+  //       <meta property="og:title" content="$VALUE">
+  //       <meta name="twitter:title" content="$VALUE">
+  //       <meta property="og:site_name" content="$VALUE">
+  //     `
+  //     },
+  //     'link[rel="icon"]',
+  //     'meta[name="google-adsense-account"]',
+  //     'meta[name="google-site-verification"]',
+  //     'meta[name="author"]',
+  //     'meta[property="article:author"]',
+  //     {
+  //       'selector': 'meta[name="description"]',
+  //       'data': `
+  //       <meta name="description"
+  //       content="$VALUE">
+  //       <meta property="og:description" content="$VALUE">
+  //       <meta name="twitter:description" content="$VALUE">
+  //     `
+  //     },
+  //     {
+  //       'selector': 'meta[property="published_time"]',
+  //       'data': `
+  //       <meta property="article:published_time" content="$VALUE">`
+  //     },
+  //     {
+  //       'selector': 'meta[property="updated_time"]',
+  //       'data': `
+  //       <meta property="article:modified_time" content="$VALUE">
+  //       <meta property="og:updated_time" content="$VALUE">`
+  //     },
+  //     {
+  //       'selector': 'meta[property="url"]',
+  //       'data': `
+  //       <link rel="canonical" href="$VALUE">`
+  //     }
+  //   ];
+  //   for (const tag of tagsToAdd) {
+  //     if (typeof tag === "string") {
+  //       const el = appHead.querySelector(tag);
+  //       if (el) headerData[tag] = el.outerHTML;
+  //     } else if (typeof tag === "object" && tag.selector && tag.data) {
+  //       const el = appHead.querySelector(tag.selector);
+  //       if (el) {
+  //         const value = tag.selector === 'title' ? el.innerHTML : el.getAttribute(tag.attribute ?? 'content');
+  //         if (value) {
+  //           headerData[tag.selector] = tag.data.replaceAll(/\$VALUE/g, value);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   const imageMeta = appHead.querySelector('meta[property="image"]');
+  //   if (imageMeta) {
+  //     const url = imageMeta.getAttribute('content');
+  //     const width = imageMeta.getAttribute('width');
+  //     const height = imageMeta.getAttribute('height');
+  //     headerData['og:image'] = `<meta property="og:image" content="${url}">`;
+  //     headerData['og:image:width'] = `<meta property="og:image:width" content="${width}">`;
+  //     headerData['og:image:height'] = `<meta property="og:image:height" content="${height}">`;
+  //     headerData['twitter:image'] = `<meta name="twitter:image" content="${url}">`;
+  //   }
+  // }
+  // getHeaderData(root);
+  // if (section) getHeaderData(section);
   let strHeaderData = '';
   for (const key of Object.keys(headerData)) {
     strHeaderData += `${headerData[key]}\n`;
@@ -297,6 +322,7 @@ const getHead = (section, headTag = 'app-head', sectionPath = '') => {
 const getPrincipalWrapper = (content) => {
   const appBody = root.querySelector('app-body');
   const appRoot = appBody.querySelector('app-root');
+  const layout = appRoot.querySelector('app-layout');
   const appHeader = appRoot.querySelector('app-header')?.innerHTML ?? '';
   const appFooter = appRoot.querySelector('app-footer')?.innerHTML ?? '';
 
@@ -304,7 +330,13 @@ const getPrincipalWrapper = (content) => {
     .map(attr => `${attr.name}="${attr.value}"`)
     .join(' ');
 
-  return `<body ${bodyAttributes}>${appHeader}${content}${appFooter}</body>`;
+  let htmlLayout = layout?.innerHTML;
+
+  if (htmlLayout) {
+    htmlLayout = htmlLayout.replace('<app-children></app-children>', content)
+  }
+
+  return `<body ${bodyAttributes}>${appHeader}${htmlLayout ? htmlLayout : content}${appFooter}</body>`;
 
 }
 
@@ -405,8 +437,7 @@ const generateSEOFiles = () => {
 
 export const generateDist = () => {
   setAttributeForTags('img', 'loading', 'lazy');
-  const html = root.innerHTML.replaceAll("$URL", data.url);
-  root.innerHTML = html;
+  clearVars();
   clearTemplates();
   clearForEachSections();
   clearForEachSubsections();
