@@ -11,11 +11,6 @@
     <meta property="image" content="img/portada.webp" width="1200" height="630">
     <meta name="google-adsense-account" content="ca-pub-2721417416371812">
     <meta name="google-site-verification" content="WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M" />
-    <style>
-        p {
-            color: red;
-        }
-    </style>
 </app-head>
 <app-body class="bg-gray-100 text-gray-900 font-sans">
     <app-root>
@@ -35,31 +30,30 @@
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </label>
-                        <ul class="hidden md:flex space-x-6 font-medium">
-                            <li><a href="$URL" class="hover:text-yellow-600">Inicio</a></li>
-                            <li class="relative group">
-                                <span class="hover:text-yellow-600 h-full flex items-center">Recetas</span>
-                                <ul
-                                    class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
-                                    <app-forEach-section>
-                                        <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                        <ul class="hidden md:flex font-medium h-16">
+                            <app-use-template ref="menu-item" label="Inicio" url=""></app-use-template>
+                            <app-use-template ref="menu-dropdown-item" label="Recetas">
+                                <app-forEach-section sectionGroup="comida">
+                                    <li class="hover:bg-yellow-100 transition-colors duration-200">
+                                        <a href="$URL/${section.path}"
+                                            class="flex items-center px-4 py-2 w-full h-full">
                                             <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M5 12h14M12 5l7 7-7 7" />
                                             </svg>
-                                            <a href="$URL/${section.path}">${section.name}</a>
-                                        </li>
-                                    </app-forEach-section>
-                                </ul>
-                            </li>
+                                            ${section.name}
+                                        </a>
+                                    </li>
+                                </app-forEach-section>
+                            </app-use-template>
                         </ul>
                     </div>
                 </nav>
                 <div
                     class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
                     <ul class="flex flex-col gap-2">
-                        <app-forEach-section>
+                        <app-forEach-section sectionGroup="comida">
                             <li>
                                 <a href="$URL/${section.path}"
                                     class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
@@ -81,7 +75,7 @@
             <p>Nuestras mejores recetas</p>
             <p>Esto aparecerá solo en el index.html</p>
         </app-index>
-        <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
+        <app-section name="Aves de caza" sectionGroup="comida" lastmod="2025-05-25T19:44:06" data-icon="aves">
             <app-section-head>
                 <title>Aves de caza</title>
                 <meta name="description" content="Aprende a preparar recetas de aves de caza">
@@ -107,7 +101,8 @@
                 <app-subsection-body>
                     <p>mas html para la subsection de pollo con patatas</p>
                     <img src="$URL/img/patatas.png">
-                    <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla">
+                    <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla"
+                        img="pollo-con-patatas-al-horno">
                         <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
                             ng-content de angular</p>
                     </app-use-template>
@@ -124,6 +119,15 @@
                     <p>mas html para la subsection de pavo con batatas</p>
                 </app-subsection-body>
             </app-subsection>
+        </app-section>
+        <app-section name="prueba" sectionGroup="prueba" lastmod="2025-05-25T19:44:06" data-icon="aves">
+            <app-section-head>
+                <title>Prueba</title>
+                <meta name="description" content="Aprende a preparar recetas de aves de caza">
+            </app-section-head>
+            <app-section-index>
+                seccion de prueba
+            </app-section-index>
         </app-section>
         <app-footer>
             <footer class="bg-yellow-600 text-white mt-12">
@@ -158,7 +162,31 @@
     </app-root>
 </app-body>
 <app-templates>
-    <app-template ref="item-receta" data-title data-description>
+
+    <app-template ref="menu-item" data-label data-url>
+        <li class="h-full flex items-center">
+            <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600">${label}</a>
+        </li>
+    </app-template>
+
+    <app-template ref="menu-dropdown-item" data-label>
+        <li class="relative group h-full flex items-center">
+            <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
+                ${label}
+                <!-- Flecha que rota al hacer hover -->
+                <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+                <ul
+                    class="absolute top-full right-0 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 ease-out transform grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
+                    <children></children>
+                </ul>
+            </span>
+        </li>
+    </app-template>
+
+    <app-template ref="item-receta" data-title data-description data-img>
         <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
             <article itemscope itemtype="https://schema.org/NewsArticle">
                 <header class="pb-4 sm:pb-6">
@@ -166,7 +194,7 @@
                     <p class="text-gray-600 mt-1 sm:mt-2" itemprop="articleBody">${description}</p>
                 </header>
                 <figure class="w-full">
-                    <img itemprop="image" src="https://source.unsplash.com/800x400/?roasted-potatoes" alt="Patatas al horno"
+                    <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="Patatas al horno"
                         class="w-full h-auto object-cover" />
                     <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
                         Imagen referencial de las patatas al horno.

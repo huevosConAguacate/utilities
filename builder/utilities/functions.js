@@ -111,10 +111,12 @@ const clearForEachSections = () => {
   const forEachSections = root.getElementsByTagName('app-forEach-section');
   for (let forEachSection of forEachSections) {
     let htmlSection = '';
-    const sections = root.getElementsByTagName("app-section");
+    const sectionGroup = forEachSection.getAttribute('sectionGroup');
+    const sections = root.getElementsByTagName('app-section');
     for (let section of sections) {
+      if (sectionGroup && sectionGroup !== section.getAttribute('sectionGroup')) continue;
       let html = forEachSection.innerHTML;
-      const nameSection = section.getAttribute("name");
+      const nameSection = section.getAttribute('name');
       const pathSection = clearName(nameSection);
       const values = {
         name: nameSection, path: pathSection,

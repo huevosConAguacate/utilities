@@ -82,27 +82,43 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
                         </label>
-                        <ul class="hidden md:flex space-x-6 font-medium">
-                            <li><a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" class="hover:text-yellow-600">Inicio</a></li>
-                            <li class="relative group">
-                                <span class="hover:text-yellow-600 h-full flex items-center">Recetas</span>
-                                <ul class="absolute top-full right-0 hidden group-hover:grid grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
-                                    <app-foreach-section>
-                                        <li class="flex items-center px-4 py-2 hover:bg-yellow-100">
+                        <ul class="hidden md:flex font-medium h-16">
+                            
+        <li class="h-full flex items-center">
+            <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" class="h-full flex items-center px-4 hover:text-yellow-600">Inicio</a>
+        </li>
+    
+                            
+        <li class="relative group h-full flex items-center">
+            <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
+                Recetas
+                <!-- Flecha que rota al hacer hover -->
+                <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+                <ul class="absolute top-full right-0 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 ease-out transform grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
+                    
+                                <app-foreach-section sectiongroup="comida">
+                                    <li class="hover:bg-yellow-100 transition-colors duration-200">
+                                        <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza" class="flex items-center px-4 py-2 w-full h-full">
                                             <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
                                             </svg>
-                                            <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza">Aves de caza</a>
-                                        </li>
-                                    </app-foreach-section>
-                                </ul>
-                            </li>
+                                            Aves de caza
+                                        </a>
+                                    </li>
+                                </app-foreach-section>
+                            
+                </ul>
+            </span>
+        </li>
+    
                         </ul>
                     </div>
                 </nav>
                 <div class="absolute top-16 left-0 w-full h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
                     <ul class="flex flex-col gap-2">
-                        <app-foreach-section>
+                        <app-foreach-section sectiongroup="comida">
                             <li>
                                 <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza" class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
                                     <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

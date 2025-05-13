@@ -4,4 +4,9 @@
     <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/sitemap.xml</loc>
     <lastmod>2025-05-25T19:44:06+02:00</lastmod>
   </sitemap>
+
+  <sitemap>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/prueba/sitemap.xml</loc>
+    <lastmod>2025-05-25T19:44:06+02:00</lastmod>
+  </sitemap>
 </sitemapindex>
