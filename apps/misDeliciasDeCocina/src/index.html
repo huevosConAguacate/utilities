@@ -1,22 +1,24 @@
 <app-vars>
     <app-var injectValue="ACTUAL_PATH" />
+    <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+    <app-var name="TITLE_SEPARATOR" value="|"></app-var>
     <app-var name="TITLE" value="Recetas de Cocina | Ideas Fáciles y Saludables" />
     <app-var name="DESCRIPTION"
         value="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!" />
-    <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+
     <app-var name="PUBLISHER" value="" />
 </app-vars>
-<app-head>
+<app-head data-title="$TITLE" data-image="portada">
 
     <!-- Icono y título -->
     <link rel="icon" type="image/x-icon" href="$URL/img/logo.ico">
-    <title>$TITLE</title>
+    <title>${title}</title>
 
     <!-- Metadatos generales -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="language" content="es">
-    <meta name="title" content="$TITLE" />
+    <meta name="title" content="${title}" />
     <meta name="description" content="$DESCRIPTION">
     <meta name="author" content="Guille">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -27,14 +29,14 @@
     <link rel="canonical" href="$URL">
     <meta property="url" content="$URL">
     <meta property="og:url" content="$URL/$ACTUAL_PATH">
-    
+
     <!-- Open Graph -->
     <meta property="og:title" content="$TITLE">
     <meta property="og:site_name" content="$TITLE">
     <meta property="og:locale" content="es_ES">
     <meta property="og:type" content="article">
     <meta property="og:description" content="$DESCRIPTION">
-    <meta property="og:image" content="$URL/img/portada.webp">
+    <meta property="og:image" content="$URL/img/${image}.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/webp">
@@ -82,8 +84,8 @@
                         </label>
                         <ul class="hidden md:flex font-medium h-16" itemscope
                             itemtype="https://schema.org/BreadcrumbList">
-                            <app-use-template ref="menu-item" label="Inicio" url=""></app-use-template>
-                            <app-use-template ref="menu-dropdown-item" label="Recetas">
+                            <app-use-template name="menu-item" data-label="Inicio" data-url=""></app-use-template>
+                            <app-use-template name="menu-dropdown-item" data-label="Recetas">
                                 <app-forEach-section sectionGroup="comida">
                                     <li class="hover:bg-yellow-100 transition-colors duration-200">
                                         <a href="$URL/${section.path}"
@@ -127,14 +129,18 @@
             </main>
         </app-layout>
         <app-index>
-            <app-use-template ref="header" title="Recetas de cocina caseras y rápidas explicadas paso a paso"
-                body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
+            <app-use-template name="header" data-title="Recetas de cocina caseras y rápidas explicadas paso a paso"
+                data-body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
+            <app-forEach-subsection featured limit="1">
+                <p>${subsection.name}</p>
+                <p>${subsection.path}</p>
+                <p>${subsection.img}</p>
+                hola
+            </app-forEach-subsection>
         </app-index>
         <app-section-group name="comida">
             <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
-                <app-section-head>
-                    <title>$TITLE | Aves de caza</title>
-                </app-section-head>
+                <app-section-head data-title="$TITLE $TITLE_SEPARATOR Aves de caza" />
                 <app-section-header>
                     cabecera de Aves de caza
                 </app-section-header>
@@ -143,12 +149,13 @@
                 </app-section-footer>
                 <app-section-index>
                     <p>Esto aparecerá solo en el index.html de Aves de caza</p>
-                    <app-forEach-subsection>
+                    <app-forEach-subsection name="Aves de caza">
                         <p>${subsection.name}</p>
                         <p>${subsection.path}</p>
+                        <p>${subsection.img}</p>
                     </app-forEach-subsection>
                 </app-section-index>
-                <app-subsection name="pollo con patatas" data-img="pollo.webp">
+                <app-subsection name="pollo con patatas" featured data-img="pollo.webp">
                     <app-subsection-head>
                         <title>pollo con patatas</title>
                         <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
@@ -156,18 +163,19 @@
                     <app-subsection-body>
                         <p>mas html para la subsection de pollo con patatas</p>
                         <img src="$URL/img/patatas.png">
-                        <app-use-template ref="item-receta" title="Pollo con patatas" description="bla bla bla"
-                            img="pollo-con-patatas-al-horno">
+                        <app-use-template name="item-receta" data-title="Pollo con patatas"
+                            data-description="bla bla bla" data-img="pollo-con-patatas-al-horno">
                             <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
                                 ng-content de angular</p>
                         </app-use-template>
                         <p>mas html para la subsection de pollo con patatas</p>
                     </app-subsection-body>
                 </app-subsection>
-                <app-subsection name="pavo con batatas" data-img="pavo.webp">
+                <app-subsection name="pavo con batatas" featured data-img="pavo.webp">
                     <app-subsection-body>
                         <p>mas html para la subsection de pavo con batatas</p>
-                        <app-use-template ref="item-receta" title="Pavo con batatas" description="bla bla bla">
+                        <app-use-template name="item-receta" data-title="Pavo con batatas"
+                            data-description="bla bla bla">
                             <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
                                 ng-content de angular</p>
                         </app-use-template>
@@ -221,14 +229,14 @@
 </app-body>
 <app-templates>
 
-    <app-template ref="header" data-title data-body>
+    <app-template name="header" data-title data-body>
         <header class="pb-4 sm:pb-6">
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
             <p class="text-gray-600 mt-1 sm:mt-2">${body}</p>
         </header>
     </app-template>
 
-    <app-template ref="menu-item" data-label data-url>
+    <app-template name="menu-item" data-label data-url>
         <li class="h-full flex items-center" itemprop="itemListElement" itemscope
             itemtype="https://schema.org/ListItem">
             <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600" itemprop="item"><span
@@ -236,7 +244,7 @@
         </li>
     </app-template>
 
-    <app-template ref="menu-dropdown-item" data-label>
+    <app-template name="menu-dropdown-item" data-label="NO LABEL">
         <li class="relative group h-full flex items-center" itemprop="itemListElement" itemscope
             itemtype="https://schema.org/ListItem">
             <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
@@ -254,7 +262,7 @@
         </li>
     </app-template>
 
-    <app-template ref="item-receta" data-title data-description data-img>
+    <app-template name="item-receta" data-title data-description data-img>
 
         <article itemscope itemtype="https://schema.org/NewsArticle">
 

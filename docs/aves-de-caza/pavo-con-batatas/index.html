@@ -3,17 +3,17 @@
     <html lang="es">
 
     <head>
-
+    
 
     <!-- Icono y título -->
     <link rel="icon" type="image/x-icon" href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/logo.ico">
-    <title>Recetas de Cocina | Ideas Fáciles y Saludables</title>
+    <title>${title}</title>
 
     <!-- Metadatos generales -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="language" content="es">
-    <meta name="title" content="Recetas de Cocina | Ideas Fáciles y Saludables">
+    <meta name="title" content="${title}">
     <meta name="description" content="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!">
     <meta name="author" content="Guille">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -24,14 +24,14 @@
     <link rel="canonical" href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist">
     <meta property="url" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist">
     <meta property="og:url" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/pavo-con-batatas">
-
+    
     <!-- Open Graph -->
     <meta property="og:title" content="Recetas de Cocina | Ideas Fáciles y Saludables">
     <meta property="og:site_name" content="Recetas de Cocina | Ideas Fáciles y Saludables">
     <meta property="og:locale" content="es_ES">
     <meta property="og:type" content="article">
     <meta property="og:description" content="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!">
-    <meta property="og:image" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/portada.webp">
+    <meta property="og:image" content="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/${image}.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/webp">
@@ -76,34 +76,16 @@
                         </label>
                         <ul class="hidden md:flex font-medium h-16" itemscope="" itemtype="https://schema.org/BreadcrumbList">
                             
-        <li class="h-full flex items-center" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
-            <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" class="h-full flex items-center px-4 hover:text-yellow-600" itemprop="item"><span itemprop="name">Inicio</span></a>
-        </li>
+        <header class="pb-4 sm:pb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">null</h1>
+            <p class="text-gray-600 mt-1 sm:mt-2">null</p>
+        </header>
     
                             
-        <li class="relative group h-full flex items-center" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
-            <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
-                <span itemprop="name">Recetas</span>
-                <!-- Flecha que rota al hacer hover -->
-                <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-                <ul class="absolute top-full right-0 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 ease-out transform grid-cols-2 gap-2 bg-white shadow-md rounded p-2 w-72 z-20">
-                    
-                                <app-foreach-section sectiongroup="comida">
-                                    <li class="hover:bg-yellow-100 transition-colors duration-200">
-                                        <a href="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza" class="flex items-center px-4 py-2 w-full h-full">
-                                            <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-                                            </svg>
-                                            Aves de caza
-                                        </a>
-                                    </li>
-                                </app-foreach-section>
-                            
-                </ul>
-            </span>
-        </li>
+        <header class="pb-4 sm:pb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">null</h1>
+            <p class="text-gray-600 mt-1 sm:mt-2">null</p>
+        </header>
     
                         </ul>
                     </div>
@@ -130,48 +112,10 @@
                 
                         <p>mas html para la subsection de pavo con batatas</p>
                         
-
-        <article itemscope="" itemtype="https://schema.org/NewsArticle">
-
-            <header class="pb-4 sm:pb-6">
-                <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">Pavo con batatas</h1>
-                <p class="text-gray-600 mt-1 sm:mt-2" itemprop="articleBody">bla bla bla</p>
-            </header>
-
-            <figure class="w-full">
-                <img itemprop="image" src="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/comida/null.webp" alt="Patatas al horno" class="w-full h-auto object-cover" loading="lazy">
-                <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
-                    Imagen referencial de las patatas al horno.
-                </figcaption>
-            </figure>
-
-            <section class="pt-4 sm:pt-6 border-t">
-                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
-                <ul class="list-disc list-inside space-y-1 sm:space-y-2">
-                    <li>4 patatas medianas</li>
-                    <li>2 cucharadas de aceite de oliva</li>
-                    <li>1 cucharadita de pimentón dulce</li>
-                    <li>1 diente de ajo picado</li>
-                    <li>Sal y pimienta al gusto</li>
-                    <li>Romero o tomillo fresco (opcional)</li>
-                </ul>
-            </section>
-
-            <section class="pt-4 sm:pt-6 border-t">
-                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
-                <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
-                    <li>Precalienta el horno a 200°C.</li>
-                    <li>Lava bien las patatas y córtalas en gajos.</li>
-                    <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.
-                    </li>
-                    <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
-                    <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
-                    <li>Sirve calientes como acompañamiento o plato principal.</li>
-                </ol>
-            </section>
-        </article>
-
-
+        <header class="pb-4 sm:pb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">Pavo con batatas</h1>
+            <p class="text-gray-600 mt-1 sm:mt-2">null</p>
+        </header>
     
                         <p>mas html para la subsection de pavo con batatas</p>
                     

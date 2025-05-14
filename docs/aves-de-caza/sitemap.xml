@@ -5,10 +5,6 @@
     <loc>$URL/aves-de-caza/</loc></url><url>
     <loc>$URL/aves-de-caza/pollo-con-patatas/</loc><image:image>
       <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/patatas.png</image:loc>
-    </image:image><image:image>
-      <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/comida/pollo-con-patatas-al-horno.webp</image:loc>
     </image:image></url><url>
-    <loc>$URL/aves-de-caza/pavo-con-batatas/</loc><image:image>
-      <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/comida/null.webp</image:loc>
-    </image:image></url>
+    <loc>$URL/aves-de-caza/pavo-con-batatas/</loc></url>
 </urlset>

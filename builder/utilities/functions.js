@@ -90,6 +90,9 @@ const clearVars = () => {
   for (let htmlVar of vars) {
     const name = htmlVar.getAttribute('name')?.toUpperCase();
     const value = htmlVar.getAttribute('value');
+    if (name === 'URL') {
+      data.url = value;
+    }
     if (!name || value === null) continue;
     root.innerHTML = root.innerHTML.replaceAll(`\$${name}`, value);
   }
@@ -99,14 +102,14 @@ const clearTemplates = () => {
   const templates = root.querySelector('app-templates')?.getElementsByTagName('app-template') ?? [];
   const useTemplates = root.getElementsByTagName('app-use-template');
   for (let useTemplate of useTemplates) {
-    const useRefTemplate = useTemplate.getAttribute('ref');
+    const useRefTemplate = useTemplate.getAttribute('name');
     for (let template of templates) {
-      const refTemplate = template.getAttribute('ref');
+      const refTemplate = template.getAttribute('name');
       if (refTemplate === useRefTemplate) {
         let finalTemplate = template.innerHTML;
         const children = useTemplate.innerHTML;
         for (let key of Object.keys(template.dataset)) {
-          const value = useTemplate.getAttribute(key);
+          const value = useTemplate.dataset[key] ?? template.dataset[key];
           finalTemplate = finalTemplate.replaceAll(`\$\{${key}\}`, value)
         }
         useTemplate.innerHTML = finalTemplate;
@@ -143,12 +146,15 @@ const clearForEachSections = () => {
       htmlSection += html;
     }
     forEachSection.innerHTML = htmlSection;
+    unwrapTag('app-forEach-section');
   }
 }
 
 const clearForEachSubsections = () => {
   const forEachSubsections = root.getElementsByTagName('app-forEach-subsection');
   for (let forEachSubsection of forEachSubsections) {
+    const isFeatured = forEachSubsection.getAttribute('featured') !== null;
+    const limit = Number(forEachSubsection.getAttribute('limit') ?? 100);
     let html = '';
     let forEachSubsectionName = forEachSubsection.getAttribute('section');
     if (!forEachSubsectionName) {
@@ -159,11 +165,13 @@ const clearForEachSubsections = () => {
       if (parent) forEachSubsectionName = parent.getAttribute('name');
     }
     const sections = root.getElementsByTagName('app-section');
+    let limitCount = 0;
     for (let section of sections) {
       const sectionName = section.getAttribute('name');
-      if (sectionName === forEachSubsectionName) {
-        const subsections = section.getElementsByTagName('app-subsection');
+      if (isFeatured || (sectionName === forEachSubsectionName)) {
+        const subsections = (isFeatured ? root : section).getElementsByTagName('app-subsection');
         for (let subsection of subsections) {
+          const subsectionIsFeatured = subsection.getAttribute('featured') !== null;
           let htmlSubsection = forEachSubsection.innerHTML;
           const nameSubsection = subsection.getAttribute('name');
           const pathSubsection = clearName(nameSubsection);
@@ -174,149 +182,39 @@ const clearForEachSubsections = () => {
           for (const key in values) {
             htmlSubsection = htmlSubsection.replaceAll(`\$\{subsection.${key}\}`, values[key])
           }
-          html += htmlSubsection;
+          if (!isFeatured || (subsectionIsFeatured && limitCount < limit)) {
+            html += htmlSubsection;
+            limitCount++;
+          }
         }
         break;
       }
     }
     forEachSubsection.innerHTML = html;
   }
+  unwrapTag('app-foreach-subsection');
 }
+
+
+
 
 const getHead = (section, headTag, sectionPath = '') => {
   let headerData = {};
   const appHead = root.querySelector('app-head');
+  const sectionHead = section?.querySelector(headTag);
+  let htmlHead = appHead?.innerHTML ?? '';
+  for (let key of Object.keys(appHead.dataset)) {
+    const appHeadValue = appHead.dataset[key]
+    const sectionValue = sectionHead?.dataset[key] ?? null;
+    htmlHead = htmlHead.replaceAll(`\$\{${key}\}`, sectionValue ?? appHeadValue);
+  }
   return `
 <!DOCTYPE html>
     <html lang="es">
 
     <head>
-${appHead?.innerHTML ?? ''}
-  </head>
-  ` ;
-  // const getHeaderData = (element) => {
-  //   const appHead = element.querySelector(headTag);
-  //   if (!appHead) return;
-  //   const tagsToAdd = [
-  //     {
-  //       'selector': 'title',
-  //       'data': `
-  //       <title>$VALUE</title>
-  //       <meta name="title" content="$VALUE"/>
-  //       <meta property="og:title" content="$VALUE">
-  //       <meta name="twitter:title" content="$VALUE">
-  //       <meta property="og:site_name" content="$VALUE">
-  //     `
-  //     },
-  //     'link[rel="icon"]',
-  //     'meta[name="google-adsense-account"]',
-  //     'meta[name="google-site-verification"]',
-  //     'meta[name="author"]',
-  //     'meta[property="article:author"]',
-  //     {
-  //       'selector': 'meta[name="description"]',
-  //       'data': `
-  //       <meta name="description"
-  //       content="$VALUE">
-  //       <meta property="og:description" content="$VALUE">
-  //       <meta name="twitter:description" content="$VALUE">
-  //     `
-  //     },
-  //     {
-  //       'selector': 'meta[property="published_time"]',
-  //       'data': `
-  //       <meta property="article:published_time" content="$VALUE">`
-  //     },
-  //     {
-  //       'selector': 'meta[property="updated_time"]',
-  //       'data': `
-  //       <meta property="article:modified_time" content="$VALUE">
-  //       <meta property="og:updated_time" content="$VALUE">`
-  //     },
-  //     {
-  //       'selector': 'meta[property="url"]',
-  //       'data': `
-  //       <link rel="canonical" href="$VALUE">`
-  //     }
-  //   ];
-  //   for (const tag of tagsToAdd) {
-  //     if (typeof tag === "string") {
-  //       const el = appHead.querySelector(tag);
-  //       if (el) headerData[tag] = el.outerHTML;
-  //     } else if (typeof tag === "object" && tag.selector && tag.data) {
-  //       const el = appHead.querySelector(tag.selector);
-  //       if (el) {
-  //         const value = tag.selector === 'title' ? el.innerHTML : el.getAttribute(tag.attribute ?? 'content');
-  //         if (value) {
-  //           headerData[tag.selector] = tag.data.replaceAll(/\$VALUE/g, value);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   const imageMeta = appHead.querySelector('meta[property="image"]');
-  //   if (imageMeta) {
-  //     const url = imageMeta.getAttribute('content');
-  //     const width = imageMeta.getAttribute('width');
-  //     const height = imageMeta.getAttribute('height');
-  //     headerData['og:image'] = `<meta property="og:image" content="${url}">`;
-  //     headerData['og:image:width'] = `<meta property="og:image:width" content="${width}">`;
-  //     headerData['og:image:height'] = `<meta property="og:image:height" content="${height}">`;
-  //     headerData['twitter:image'] = `<meta name="twitter:image" content="${url}">`;
-  //   }
-  // }
-  // getHeaderData(root);
-  // if (section) getHeaderData(section);
-  let strHeaderData = '';
-  for (const key of Object.keys(headerData)) {
-    strHeaderData += `${headerData[key]}\n`;
-  }
-  const htmlHeader = `
-  <!DOCTYPE html>
-  <html lang="es">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="language" content="es">
-      <meta property="og:locale" content="es_ES">
-      <meta property="og:image:type" content="image/webp">
-      <meta name="twitter:card" content="summary_large_image">
-      <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-      <meta property="og:type" content="article">
-      <meta property="og:url" content="${data.url}/${sectionPath}">
-      ${strHeaderData}
-      <!-- 📘 Datos estructurados -->
-      <script type="application/ld+json">
-          [
-            {
-              "@context": "http://schema.org",
-              "@type": "Article",
-              "headline": "Capítulo 1: La Semilla Susurrante",
-              "image": "https://huevosconaguacate.github.io/gardenOfSilentEchoes/img/nino-con-semilla-brillante.webp",
-              "articleBody": "En el valle donde los vientos contaban historias y las montañas escuchaban en silencio, vivía un niño llamado Elian. Era conocido por su corazón inquieto y sus oídos sordos a las sutilezas del mundo. Un día, mientras jugaba cerca del Bosque de los Ecos, encontró una semilla que brillaba con una luz tenue. Al acercarla a su oído, creyó escuchar un susurro apenas audible, una melodía suave que parecía emanar de su interior. Intrigado, Elian guardó la semilla, sin comprender el mensaje que intentaba transmitir. Pasaron los días y Elian olvidó la semilla en un rincón de su cabaña. Se dedicó a sus juegos ruidosos y a sus carreras veloces, sin prestar atención a los murmullos del viento ni al canto distante de los pájaros. La semilla permaneció en silencio, esperando el momento adecuado para despertar la atención del niño."
-            },
-            {
-              "@context": "http://schema.org",
-              "@type": "Article",
-              "headline": "Capítulo 2: El Jardín Olvidado",
-              "image": "https://huevosconaguacate.github.io/gardenOfSilentEchoes/img/jardin-escondido-silencioso.webp",
-              "articleBody": "Un anciano del pueblo, conocido por su sabiduría silenciosa, notó la agitación interior de Elian. Con una mirada amable, le habló del Jardín de los Ecos Silenciosos, un lugar escondido donde las plantas crecían escuchando los secretos del corazón. Le contó que cada semilla contenía una melodía única, y solo aquellos que aprendían a escuchar el silencio podían hacerla florecer. Elian, movido por la curiosidad, buscó el jardín. Lo encontró oculto tras una cortina de enredaderas, un lugar de una quietud asombrosa. Las flores se mecían suavemente, como si danzaran al ritmo de una música invisible. En el centro, vio un pequeño espacio de tierra removida, esperando ser cultivado. Recordó la semilla brillante que había olvidado. Con cuidado, Elian plantó la semilla en el jardín. Se sentó en silencio, intentando escuchar algo más allá del murmullo de sus propios pensamientos. Al principio, solo oyó el latido de su propio corazón, pero poco a poco, una suave melodía comenzó a emerger de la tierra."
-            },
-            {
-              "@context": "http://schema.org",
-              "@type": "Article",
-              "headline": "Capítulo 3: La Flor de la Escucha",
-              "image": "https://huevosconaguacate.github.io/gardenOfSilentEchoes/img/flor-unica-floreciendo-en-silencio.webp",
-              "articleBody": "De la tierra brotó un tallo delgado que se elevó lentamente, y en su extremo floreció una flor de colores nunca vistos, cuyas hojas vibraban con una melodía suave y constante. Elian se acercó y escuchó con atención. La flor cantaba historias de paciencia, de la belleza que se revela en la quietud y de la importancia de escuchar no solo con los oídos, sino con el corazón. Desde ese día, Elian ya no fue el mismo. Aprendió a apreciar los susurros del viento, el canto de los pájaros y el silencio elocuente de la naturaleza. Comprendió que el verdadero valor no reside en el ruido y la prisa, sino en la capacidad de detenerse, escuchar y sentir las melodías sutiles que el mundo ofrece constantemente. La flor del Jardín de los Ecos Silenciosos se convirtió en un recordatorio constante de que las respuestas más importantes a menudo se encuentran en los murmullos silenciosos de nuestro propio corazón y en la внимательность hacia el mundo que nos rodea. La verdadera sabiduría florece cuando aprendemos a escuchar el eco silencioso de nuestras propias emociones y las de los demás."
-            }
-          ]
-          </script>
-      <link rel="stylesheet" href="${data.url}/styles/tailwind.min.css">
-      <link rel="stylesheet" href="${data.url}/styles/styles.min.css">
-      <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2721417416371812"
-          crossorigin="anonymous"></script> -->
-  </head>
-  `;
-  return htmlHeader;
+      ${htmlHead}
+    </head>`;
 }
 
 const getPrincipalWrapper = (content) => {
