@@ -1,25 +1,26 @@
 <app-vars>
     <app-var injectValue="ACTUAL_PATH" />
     <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+    <app-var name="APP_NAME" value="Mis delicias de cocina" />
+    <app-var name="SITE_NAME" value="misDeliciasDeCocina.com" />
     <app-var name="TITLE_SEPARATOR" value="|"></app-var>
-    <app-var name="TITLE" value="Recetas de Cocina | Ideas Fáciles y Saludables" />
+    <app-var name="TITLE" value="Recetas de Cocina" />
     <app-var name="DESCRIPTION"
         value="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!" />
-
     <app-var name="PUBLISHER" value="" />
 </app-vars>
-<app-head data-title="$TITLE" data-image="portada">
+<app-head data-title="Ideas Fáciles y Saludables" data-image="portada" data-description="$DESCRIPTION">
 
     <!-- Icono y título -->
     <link rel="icon" type="image/x-icon" href="$URL/img/logo.ico">
-    <title>${title}</title>
+    <title>$TITLE $TITLE_SEPARATOR ${title}</title>
 
     <!-- Metadatos generales -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="language" content="es">
-    <meta name="title" content="${title}" />
-    <meta name="description" content="$DESCRIPTION">
+    <meta name="title" content="$TITLE $TITLE_SEPARATOR ${title}" />
+    <meta name="description" content="${description}">
     <meta name="author" content="Guille">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="google-adsense-account" content="ca-pub-2721417416371812">
@@ -31,22 +32,21 @@
     <meta property="og:url" content="$URL/$ACTUAL_PATH">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="$TITLE">
-    <meta property="og:site_name" content="$TITLE">
+    <meta property="og:title" content="$TITLE $TITLE_SEPARATOR ${title}">
+    <meta property="og:site_name" content="$SITE_NAME">
     <meta property="og:locale" content="es_ES">
     <meta property="og:type" content="article">
-    <meta property="og:description" content="$DESCRIPTION">
+    <meta property="og:description" content="${description}">
     <meta property="og:image" content="$URL/img/${image}.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:type" content="image/webp">
     <meta property="og:image:type" content="image/webp">
     <meta property="og:updated_time" content="$VALUE">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="$TITLE">
-    <meta name="twitter:description" content="$DESCRIPTION">
+    <meta name="twitter:title" content="$TITLE $TITLE_SEPARATOR ${title}">
+    <meta name="twitter:description" content="${description}">
 
     <!-- Artículo / autor -->
     <meta property="article:author" content="Guille">
@@ -71,9 +71,8 @@
                 <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div class="flex justify-between items-center h-16">
                         <a href="$URL" class="flex items-center text-xl font-bold text-yellow-600 gap-2">
-                            <img src="$URL/img/logo.webp" alt="Logo Mis delicias de cocina"
-                                class="h-8 w-8 object-contain" />
-                            Mis delicias de cocina
+                            <img src="$URL/img/logo.webp" alt="Logo $APP_NAME" class="h-8 w-8 object-contain" />
+                            $APP_NAME
                         </a>
                         <label for="menu-toggle" class="md:hidden cursor-pointer text-gray-600">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,16 +130,65 @@
         <app-index>
             <app-use-template name="header" data-title="Recetas de cocina caseras y rápidas explicadas paso a paso"
                 data-body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
-            <app-forEach-subsection featured limit="1">
-                <p>${subsection.name}</p>
-                <p>${subsection.path}</p>
-                <p>${subsection.img}</p>
-                hola
-            </app-forEach-subsection>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <app-forEach-subsection featured limit="2">
+                    <a href="$URL/${subsection.path}" class="block group">
+                        <div class="relative h-64 rounded-xl overflow-hidden">
+                            <img src="$URL/img/comida/${subsection.img}.webp" alt="Imagen"
+                                class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-75 group-hover:blur-sm" />
+                            <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
+                                <div
+                                    class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
+                                    <h2 class="text-white text-xl font-semibold mb-1">
+                                        ${subsection.name}
+                                    </h2>
+                                    <p
+                                        class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        ${subsection.description}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </app-forEach-subsection>
+
+
+
+
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-8">
+                <!-- Elemento -->
+                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-0">
+                    <div class="w-32 h-32 rounded-full bg-pink-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 1"
+                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
+                    </div>
+                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 1</p>
+                </div>
+
+                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-100">
+                    <div class="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 2"
+                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
+                    </div>
+                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 2</p>
+                </div>
+
+                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-200">
+                    <div class="w-32 h-32 rounded-full bg-green-100 flex items-center justify-center overflow-hidden">
+                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 3"
+                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
+                    </div>
+                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 3</p>
+                </div>
+            </div>
+
         </app-index>
         <app-section-group name="comida">
             <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
-                <app-section-head data-title="$TITLE $TITLE_SEPARATOR Aves de caza" />
+                <app-section-head data-title="Aves de caza" />
                 <app-section-header>
                     <!-- cabecera de Aves de caza -->
                 </app-section-header>
@@ -152,16 +200,10 @@
                         <div class="md:col-span-2">
                             <app-children></app-children>
                         </div>
-                        <div class="md:col-span-1">
-                            {/* Contenido de la segunda columna (más pequeña) */}
-                            <p>Este es el contenido de la segunda columna. Se mostrará debajo de la primera en
-                                dispositivos móviles y ocupará aproximadamente un tercio del ancho en pantallas medianas
-                                y grandes.</p>
-                            <ul>
-                                <li>Elemento 1</li>
-                                <li>Elemento 2</li>
-                                <li>Elemento 3</li>
-                            </ul>
+                        <div class="md:col-span-1 border-l border-gray-500 md:pl-4">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur odit, impedit
+                            laudantium libero reprehenderit temporibus sapiente dicta! Sunt provident fugit, accusantium
+                            porro eos consequatur cupiditate magni, aliquam molestias et id!
                         </div>
                     </div>
                 </app-section-layout>
@@ -173,8 +215,9 @@
                         <p>${subsection.img}</p>
                     </app-forEach-subsection>
                 </app-section-index>
-                <app-subsection name="pollo con patatas" featured data-img="pollo.webp">
-                    <app-subsection-head data-title="$TITLE $TITLE_SEPARATOR Pollo con patatas" />
+                <app-subsection name="pollo con patatas" featured data-img="pollo-con-patatas-al-horno">
+                    <app-subsection-head data-title="Pollo con patatas"
+                        data-description="Pasos para hacer una receta de pollo con patatas" />
                     <app-subsection-body>
                         <app-use-template name="receta">
                             <app-use-template name="receta-header" data-title="Pollo con patatas"
@@ -189,7 +232,7 @@
                                 data-tiempo="30 minutos"></app-use-template>
 
                             <app-use-template name="receta-ingredientes" data-img="pollo-con-patatas-al-horno"
-                                    data-imgdesc="Imagen de pollo con patatas">
+                                data-imgdesc="Imagen de pollo con patatas">
                                 <li>4 patatas medianas</li>
                                 <li>2 cucharadas de aceite de oliva</li>
                                 <li>1 cucharadita de pimentón dulce</li>
@@ -377,7 +420,7 @@
     </app-template>
 
     <app-template name="receta-elaboracion">
-        <section class="pt-4 pb-4 sm:pt-6 border-t">
+        <section class="pt-4 pb-4 sm:pt-6 border-t border-gray-500">
             <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
                 Elaboración
             </h2>

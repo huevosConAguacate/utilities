@@ -167,6 +167,7 @@ const clearForEachSubsections = () => {
     let limitCount = 0;
     for (let section of sections) {
       const sectionName = section.getAttribute('name');
+      const pathSection = clearName(sectionName);
       if (isFeatured || (sectionName === forEachSubsectionName)) {
         const subsections = (isFeatured ? root : section).getElementsByTagName('app-subsection');
         for (let subsection of subsections) {
@@ -175,7 +176,7 @@ const clearForEachSubsections = () => {
           const nameSubsection = subsection.getAttribute('name');
           const pathSubsection = clearName(nameSubsection);
           const values = {
-            name: nameSubsection, path: pathSubsection,
+            name: nameSubsection, path: [pathSection, pathSubsection].join('/'),
             ...subsection.dataset
           }
           for (const key in values) {
