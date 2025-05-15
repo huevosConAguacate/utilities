@@ -146,7 +146,6 @@ const clearForEachSections = () => {
       htmlSection += html;
     }
     forEachSection.innerHTML = htmlSection;
-    unwrapTag('app-forEach-section');
   }
 }
 
@@ -255,11 +254,15 @@ const generatePages = () => {
     const sectionheader = section.querySelector('app-section-header')?.innerHTML ?? '';
     const sectionFooter = section.querySelector('app-section-footer')?.innerHTML ?? '';
     const sectionIndex = section.querySelector('app-section-index')?.innerHTML ?? '';
+    const sectionLayout = section.querySelector('app-section-layout')?.innerHTML ?? ''; 
     for (let subSection of subSections) {
       const nameSubSection = subSection.getAttribute('name');
       const subSectionPath = clearName([nameSection, nameSubSection].join('/'));
       const htmlHeader = getHead(subSection, 'app-subsection-head', subSectionPath);
-      const htmlSubSection = subSection.querySelector('app-subsection-body').innerHTML;
+      let htmlSubSection = subSection.querySelector('app-subsection-body').innerHTML;
+      if (sectionLayout) {
+        htmlSubSection = sectionLayout.replace('<app-children></app-children>', htmlSubSection);
+      }
       const htmlFinal = getPrincipalWrapper(sectionheader + htmlSubSection + sectionFooter);
       createFile(htmlHeader + htmlFinal, subSectionPath, 'index.html');
     }
@@ -339,6 +342,7 @@ export const generateDist = () => {
   clearTemplates();
   clearForEachSections();
   clearForEachSubsections();
+  unwrapTag('app-forEach-section');
   generatePages();
   generateSEOFiles();
 }

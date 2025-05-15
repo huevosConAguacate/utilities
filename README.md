@@ -152,3 +152,9 @@ Cómo Gane 12.000 Euros con una Web | SEO + Google AdSense
 - https://www.youtube.com/watch?v=TOQBF8R92UE
 
 Quiero que actúes como un experto en SEO y análisis semántico de contenido. Usa la fórmula TF-IDF para analizar los 20 primeros resultados orgánicos de Google para la búsqueda: receta de milhojas de dulce de leche. No quiero que inventes, sino que uses los textos reales de las páginas encontradas en los SERPs. Extrae los 30 términos con mayor peso TF-IDF (palabras o frases clave), excluyendo conectores comunes. Analiza tanto las keywords individuales como las frases clave frecuentes (n-gramas relevantes). Dame la lista ordenada por importancia con una breve explicación de por qué se repiten en estos contenidos.
+
+
+
+https://hailuoai.video/create
+
+https://www.youtube.com/watch?v=2f3a1EPmc8U

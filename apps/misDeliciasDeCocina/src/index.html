@@ -67,11 +67,10 @@
 <app-body class="bg-gray-100 text-gray-900 font-sans">
     <app-root>
         <app-header>
-            <header class="bg-white shadow relative">
-                <input type="checkbox" id="menu-toggle" class="peer hidden" />
+            <header class="fixed w-screen bg-white shadow z-41">
                 <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
                     <div class="flex justify-between items-center h-16">
-                        <a href="#" class="flex items-center text-xl font-bold text-yellow-600 gap-2">
+                        <a href="$URL" class="flex items-center text-xl font-bold text-yellow-600 gap-2">
                             <img src="$URL/img/logo.webp" alt="Logo Mis delicias de cocina"
                                 class="h-8 w-8 object-contain" />
                             Mis delicias de cocina
@@ -103,8 +102,9 @@
                         </ul>
                     </div>
                 </nav>
-                <div
-                    class="absolute p-3 top-16 left-0 w-[280px] h-screen bg-white z-40 flex-col gap-2 hidden md:!hidden peer-checked:flex">
+                <input type="checkbox" id="menu-toggle" class="peer hidden" />
+                <nav class="fixed top-0 left-0 p-3 w-[280px] h-screen bg-white z-40 flex-col gap-2 mt-16 transition-transform duration-300 transform -translate-x-full
+           peer-checked:translate-x-0 md:!translate-x-0 md:!hidden">
                     <ul class="flex flex-col gap-2">
                         <app-forEach-section sectionGroup="comida">
                             <li>
@@ -120,11 +120,11 @@
                             </li>
                         </app-forEach-section>
                     </ul>
-                </div>
+                </nav>
             </header>
         </app-header>
         <app-layout>
-            <main class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 text-sm sm:text-base">
+            <main class="max-w-4xl mx-auto p-3 !pt-24 sm:p-5 lg:p-7 text-sm sm:text-base">
                 <app-children></app-children>
             </main>
         </app-layout>
@@ -142,11 +142,29 @@
             <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
                 <app-section-head data-title="$TITLE $TITLE_SEPARATOR Aves de caza" />
                 <app-section-header>
-                    cabecera de Aves de caza
+                    <!-- cabecera de Aves de caza -->
                 </app-section-header>
                 <app-section-footer>
-                    footer de Aves de caza
+                    <!-- footer de Aves de caza -->
                 </app-section-footer>
+                <app-section-layout>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <app-children></app-children>
+                        </div>
+                        <div class="md:col-span-1">
+                            {/* Contenido de la segunda columna (más pequeña) */}
+                            <p>Este es el contenido de la segunda columna. Se mostrará debajo de la primera en
+                                dispositivos móviles y ocupará aproximadamente un tercio del ancho en pantallas medianas
+                                y grandes.</p>
+                            <ul>
+                                <li>Elemento 1</li>
+                                <li>Elemento 2</li>
+                                <li>Elemento 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </app-section-layout>
                 <app-section-index>
                     <p>Esto aparecerá solo en el index.html de Aves de caza</p>
                     <app-forEach-subsection name="Aves de caza">
@@ -156,33 +174,57 @@
                     </app-forEach-subsection>
                 </app-section-index>
                 <app-subsection name="pollo con patatas" featured data-img="pollo.webp">
-                    <app-subsection-head>
-                        <title>pollo con patatas</title>
-                        <meta name="description" content="Aprende a preparar recetas de pollo con patatas">
-                    </app-subsection-head>
+                    <app-subsection-head data-title="$TITLE $TITLE_SEPARATOR Pollo con patatas" />
                     <app-subsection-body>
-                        <p>mas html para la subsection de pollo con patatas</p>
-                        <img src="$URL/img/patatas.png">
-                        <app-use-template name="item-receta" data-title="Pollo con patatas"
-                            data-description="bla bla bla" data-img="pollo-con-patatas-al-horno">
-                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
-                                ng-content de angular</p>
+                        <app-use-template name="receta">
+                            <app-use-template name="receta-header" data-title="Pollo con patatas"
+                                data-img="pollo-con-patatas-al-horno" data-imgdesc="Imagen de pollo con patatas">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, earum eligendi id sunt
+                                eveniet eaque quam voluptatibus officiis iure laudantium quae animi ipsum culpa, dolorem
+                                est
+                                repellendus cum, at unde.
+                            </app-use-template>
+
+                            <app-use-template name="receta-info" data-comensales="2 comensales"
+                                data-tiempo="30 minutos"></app-use-template>
+
+                            <app-use-template name="receta-ingredientes" data-img="pollo-con-patatas-al-horno"
+                                    data-imgdesc="Imagen de pollo con patatas">
+                                <li>4 patatas medianas</li>
+                                <li>2 cucharadas de aceite de oliva</li>
+                                <li>1 cucharadita de pimentón dulce</li>
+                                <li>1 diente de ajo picado</li>
+                                <li>Sal y pimienta al gusto</li>
+                                <li>Romero o tomillo fresco (opcional)</li>
+                            </app-use-template>
+
+                            <app-use-template name="receta-elaboracion">
+                                <app-use-template name="receta-paso" data-img="pollo-con-patatas-al-horno"
+                                    data-imgdesc="Imagen de pollo con patatas">
+                                    Precalienta el horno a 200°C.
+                                </app-use-template>
+                                <li>Lava bien las patatas y córtalas en gajos.</li>
+                                <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y
+                                    las
+                                    hierbas.
+                                </li>
+                                <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
+                                <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
+                                <li>Sirve calientes como acompañamiento o plato principal.</li>
+                            </app-use-template>
                         </app-use-template>
-                        <p>mas html para la subsection de pollo con patatas</p>
+
                     </app-subsection-body>
                 </app-subsection>
                 <app-subsection name="pavo con batatas" featured data-img="pavo.webp">
                     <app-subsection-body>
                         <p>mas html para la subsection de pavo con batatas</p>
-                        <app-use-template name="item-receta" data-title="Pavo con batatas"
-                            data-description="bla bla bla">
-                            <p>Esto aparecerá directamente en la parte de la plantilla de la etiqueta children como el
-                                ng-content de angular</p>
-                        </app-use-template>
+
                         <p>mas html para la subsection de pavo con batatas</p>
                     </app-subsection-body>
                 </app-subsection>
             </app-section>
+
         </app-section-group>
         <app-section-group name="prueba">
             <app-section name="prueba" lastmod="2025-05-25T19:44:06" data-icon="aves">
@@ -232,7 +274,7 @@
     <app-template name="header" data-title data-body>
         <header class="pb-4 sm:pb-6">
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
-            <p class="text-gray-600 mt-1 sm:mt-2">${body}</p>
+            <p class="text-gray-600 mt-2 sm:mt-2">${body}</p>
         </header>
     </app-template>
 
@@ -262,49 +304,89 @@
         </li>
     </app-template>
 
-    <app-template name="item-receta" data-title data-description data-img>
+    <app-template name="receta">
 
         <article itemscope itemtype="https://schema.org/NewsArticle">
-
-            <header class="pb-4 sm:pb-6">
-                <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
-                <p class="text-gray-600 mt-1 sm:mt-2" itemprop="articleBody">${description}</p>
-            </header>
-
-            <figure class="w-full">
-                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="Patatas al horno"
-                    class="w-full h-auto object-cover" />
-                <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
-                    Imagen referencial de las patatas al horno.
-                </figcaption>
-            </figure>
-
-            <section class="pt-4 sm:pt-6 border-t">
-                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Ingredientes</h2>
-                <ul class="list-disc list-inside space-y-1 sm:space-y-2">
-                    <li>4 patatas medianas</li>
-                    <li>2 cucharadas de aceite de oliva</li>
-                    <li>1 cucharadita de pimentón dulce</li>
-                    <li>1 diente de ajo picado</li>
-                    <li>Sal y pimienta al gusto</li>
-                    <li>Romero o tomillo fresco (opcional)</li>
-                </ul>
-            </section>
-
-            <section class="pt-4 sm:pt-6 border-t">
-                <h2 class="text-xl sm:text-2xl font-semibold text-yellow-500 mb-3 sm:mb-4">Elaboración</h2>
-                <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
-                    <li>Precalienta el horno a 200°C.</li>
-                    <li>Lava bien las patatas y córtalas en gajos.</li>
-                    <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y las hierbas.
-                    </li>
-                    <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
-                    <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
-                    <li>Sirve calientes como acompañamiento o plato principal.</li>
-                </ol>
-            </section>
+            <app-children></app-children>
         </article>
 
-
     </app-template>
+
+    <app-template name="receta-header" data-title data-img data-imgdesc>
+        <header class="pb-4 sm:pb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
+            <figure class="w-full">
+                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
+                    class="w-full mt-2 h-auto object-cover" />
+                <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
+                    ${imgdesc}
+                </figcaption>
+            </figure>
+            <p class="mt-1 sm:mt-2" itemprop="articleBody">
+                <app-children></app-children>
+            </p>
+        </header>
+    </app-template>
+
+    <app-template name="receta-info" data-comensales="1 comensal" data-tiempo="20 minutos">
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <div class="flex items-center space-x-2">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18">
+                    </path>
+                </svg>
+                <span class="text-lg font-medium text-gray-700">Para</span>
+                <span class="text-lg font-semibold text-gray-900" itemprop="recipeYield">${comensales}</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="text-lg font-medium text-gray-700">Tiempo total:</span>
+                <time class="text-lg font-semibold text-gray-900" itemprop="totalTime" datetime="PT30M">${tiempo}</time>
+            </div>
+        </div>
+    </app-template>
+
+    <app-template name="receta-ingredientes" data-img="" data-imgdesc="Imagen de comida">
+        <section class="pt-4 pb-2 sm:pt-6 border-t border-gray-500">
+            <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
+                Ingredientes
+            </h2>
+            <figure class="w-full">
+                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
+                    class="w-full mt-2 mb-2 h-auto object-cover" />
+            </figure>
+            <ul class="list-disc list-inside space-y-1 sm:space-y-2">
+                <app-children></app-children>
+            </ul>
+        </section>
+    </app-template>
+
+    <app-template name="receta-paso" data-img="" data-imgdesc="Imagen de comida">
+        <li>
+            <app-children></app-children>
+            <figure class="w-full">
+                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
+                    class="w-full mt-2 h-auto object-cover" />
+            </figure>
+        </li>
+    </app-template>
+
+    <app-template name="receta-elaboracion">
+        <section class="pt-4 pb-4 sm:pt-6 border-t">
+            <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
+                Elaboración
+            </h2>
+            <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
+                <app-children></app-children>
+            </ol>
+        </section>
+    </app-template>
+
+
+
 </app-templates>
