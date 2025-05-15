@@ -61,8 +61,6 @@
     <script src="$URL/scripts/script.js" defer></script>
     <link rel="stylesheet" href="$URL/styles/tailwind.min.css">
     <link rel="stylesheet" href="$URL/styles/styles.min.css">
-
-
 </app-head>
 <app-body class="bg-gray-100 text-gray-900 font-sans">
     <app-root>
@@ -130,61 +128,46 @@
         <app-index>
             <app-use-template name="header" data-title="Recetas de cocina caseras y rápidas explicadas paso a paso"
                 data-body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <app-forEach-subsection featured limit="2">
-                    <a href="$URL/${subsection.path}" class="block group">
-                        <div class="relative h-64 rounded-xl overflow-hidden">
-                            <img src="$URL/img/comida/${subsection.img}.webp" alt="Imagen"
-                                class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-75 group-hover:blur-sm" />
-                            <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
-                                <div
-                                    class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
-                                    <h2 class="text-white text-xl font-semibold mb-1">
-                                        ${subsection.name}
-                                    </h2>
-                                    <p
-                                        class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                        ${subsection.description}
-                                    </p>
+            <app-use-template name="section-normal" data-title="Recetas destacadas">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <app-forEach-subsection featured limit="9">
+                        <a href="$URL/${subsection.path}" class="block group">
+                            <div class="relative h-64 rounded-xl overflow-hidden">
+                                <img src="$URL/img/comida/${subsection.img}.webp" alt="Imagen"
+                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-75 group-hover:blur-sm" />
+                                <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
+                                    <div
+                                        class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
+                                        <h3 class="text-white text-xl font-semibold mb-1">
+                                            ${subsection.name}
+                                        </h3>
+                                        <p
+                                            class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                            ${subsection.description}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                        </a>
+                    </app-forEach-subsection>
+                </div>
+            </app-use-template>
+            <div class="flex justify-center mt-12 gap-8">
+                <app-forEach-section>
+                    <a href="$URL/${section.path}">
+                        <div
+                            class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-0">
+                            <div
+                                class="w-32 h-32 rounded-full bg-pink-100 flex items-center justify-center overflow-hidden">
+                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 1"
+                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
+                            </div>
+                            <p class="mt-4 text-center text-gray-700 font-medium">${section.name}</p>
                         </div>
                     </a>
-                </app-forEach-subsection>
-
-
-
-
+                </app-forEach-section>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-8">
-                <!-- Elemento -->
-                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-0">
-                    <div class="w-32 h-32 rounded-full bg-pink-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 1"
-                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
-                    </div>
-                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 1</p>
-                </div>
-
-                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-100">
-                    <div class="w-32 h-32 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 2"
-                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
-                    </div>
-                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 2</p>
-                </div>
-
-                <div class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-200">
-                    <div class="w-32 h-32 rounded-full bg-green-100 flex items-center justify-center overflow-hidden">
-                        <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 3"
-                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
-                    </div>
-                    <p class="mt-4 text-center text-gray-700 font-medium">Texto descriptivo 3</p>
-                </div>
-            </div>
-
         </app-index>
         <app-section-group name="comida">
             <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
@@ -215,9 +198,11 @@
                         <p>${subsection.img}</p>
                     </app-forEach-subsection>
                 </app-section-index>
-                <app-subsection name="pollo con patatas" featured data-img="pollo-con-patatas-al-horno">
+                <app-subsection name="pollo con patatas" featured data-img="pollo-con-patatas-al-horno"
+                    data-description="La mejor receta de pollo">
                     <app-subsection-head data-title="Pollo con patatas"
-                        data-description="Pasos para hacer una receta de pollo con patatas" />
+                        data-description="Pasos para hacer una receta de pollo con patatas"
+                        data-image="comida/pollo-con-patatas-al-horno" />
                     <app-subsection-body>
                         <app-use-template name="receta">
                             <app-use-template name="receta-header" data-title="Pollo con patatas"
@@ -319,6 +304,13 @@
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
             <p class="text-gray-600 mt-2 sm:mt-2">${body}</p>
         </header>
+    </app-template>
+
+    <app-template name="section-normal" data-title>
+        <section class="pb-6 sm:pb-6 mt-2">
+            <h2 class="text-2xl pb-3 sm:text-3xl font-bold text-yellow-600">${title}</h2>
+            <app-children></app-children>
+        </section>
     </app-template>
 
     <app-template name="menu-item" data-label data-url>
