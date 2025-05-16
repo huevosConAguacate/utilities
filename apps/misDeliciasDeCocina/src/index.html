@@ -9,7 +9,9 @@
         value="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!" />
     <app-var name="PUBLISHER" value="" />
 </app-vars>
-<app-head data-title="Ideas Fáciles y Saludables" data-image="portada" data-description="$DESCRIPTION">
+
+<app-head data-title="Ideas Fáciles y Saludables" data-type="website" data-image="portada"
+    data-description="$DESCRIPTION">
 
     <!-- Icono y título -->
     <link rel="icon" type="image/x-icon" href="$URL/img/logo.ico">
@@ -27,15 +29,14 @@
     <meta name="google-site-verification" content="WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M" />
 
     <!-- Canonical y URL -->
-    <link rel="canonical" href="$URL">
-    <meta property="url" content="$URL">
-    <meta property="og:url" content="$URL/$ACTUAL_PATH">
+    <link rel="canonical" href="$URL/$ACTUAL_PATH">
 
     <!-- Open Graph -->
+    <meta property="og:url" content="$URL/$ACTUAL_PATH">
     <meta property="og:title" content="$TITLE $TITLE_SEPARATOR ${title}">
     <meta property="og:site_name" content="$SITE_NAME">
     <meta property="og:locale" content="es_ES">
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="${type}">
     <meta property="og:description" content="${description}">
     <meta property="og:image" content="$URL/img/${image}.webp">
     <meta property="og:image:width" content="1200">
@@ -44,6 +45,7 @@
     <meta property="og:updated_time" content="$VALUE">
 
     <!-- Twitter Card -->
+    <!-- <meta property="twitter:site" content="@recetaGratis"> -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="$TITLE $TITLE_SEPARATOR ${title}">
     <meta name="twitter:description" content="${description}">
@@ -52,8 +54,8 @@
     <meta property="article:author" content="Guille">
     <!-- <meta property="article:author" content="Guille">
 <meta property="article:publisher" content="https://huevosconaguacate.github.io/gardenOfSilentEchoes/">
-<meta property="article:published_time" content="2025-05-01T12:00:00+00:00"> -->
-    <meta property="article:modified_time" content="$VALUE">
+ --><!-- <meta property="article:modified_time" content="$VALUE">
+    <meta property="article:published_time" content="2025-05-01T12:00:00+00:00"> -->
 
     <!-- Scripts y estilos -->
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2721417416371812"
@@ -169,64 +171,69 @@
                 </app-forEach-section>
             </div>
         </app-index>
-        <app-section-group name="comida">
-            <app-section name="Aves de caza" lastmod="2025-05-25T19:44:06" data-icon="aves">
-                <app-section-head data-title="Aves de caza" />
-                <app-section-header>
-                    <!-- cabecera de Aves de caza -->
-                </app-section-header>
-                <app-section-footer>
-                    <!-- footer de Aves de caza -->
-                </app-section-footer>
-                <app-section-layout>
-                    <div class="grid md:grid-cols-3 gap-4">
-                        <div class="md:col-span-2">
-                            <app-children></app-children>
-                        </div>
-                        <div class="md:col-span-1 border-l border-gray-500 md:pl-4">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur odit, impedit
-                            laudantium libero reprehenderit temporibus sapiente dicta! Sunt provident fugit, accusantium
-                            porro eos consequatur cupiditate magni, aliquam molestias et id!
-                        </div>
-                    </div>
-                </app-section-layout>
-                <app-section-index>
-                    <p>Esto aparecerá solo en el index.html de Aves de caza</p>
-                    <app-forEach-subsection name="Aves de caza">
-                        <p>${subsection.name}</p>
-                        <p>${subsection.path}</p>
-                        <p>${subsection.img}</p>
-                    </app-forEach-subsection>
-                </app-section-index>
-                <app-subsection name="pollo con patatas" featured data-img="pollo-con-patatas-al-horno"
-                    data-description="La mejor receta de pollo">
-                    <app-subsection-head data-title="Pollo con patatas"
-                        data-description="Pasos para hacer una receta de pollo con patatas"
-                        data-image="comida/pollo-con-patatas-al-horno" />
+        <app-section-templates>
+            <app-section-template>
+                <app-section-group name="%sectionGroupName%">
+                    <app-section name="%title%" lastmod="%lastmod%">
+                        <app-section-head data-title="%title%"></app-section-head>
+                        <app-section-header>
+                            <!-- cabecera de %title% -->
+                        </app-section-header>
+                        <app-section-footer>
+                            <!-- footer de %title% -->
+                        </app-section-footer>
+                        <app-section-layout>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="md:col-span-2">
+                                    <app-children></app-children>
+                                </div>
+                                <div class="md:col-span-1 border-l border-gray-500 md:pl-4">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur odit, impedit
+                                    laudantium libero reprehenderit temporibus sapiente dicta! Sunt provident fugit,
+                                    accusantium
+                                    porro eos consequatur cupiditate magni, aliquam molestias et id!
+                                </div>
+                            </div>
+                        </app-section-layout>
+                        <app-section-index>
+                            <p>Esto aparecerá solo en el index.html de %title%</p>
+                            <app-forEach-subsection name="%title%">
+                                <p>${subsection.name}</p>
+                                <p>${subsection.path}</p>
+                                <p>${subsection.img}</p>
+                            </app-forEach-subsection>
+                        </app-section-index>
+                        <app-subsections></app-subsections>
+                    </app-section>
+                </app-section-group>
+            </app-section-template>
+            <app-subsection-template>
+                <app-subsection name="%title%" %featured% data-img="%socialImageUrl%"
+                    data-description="%description%">
+                    <app-subsection-head data-title="%title%"
+                        data-description="%description%"
+                        data-image="comida/%socialImageUrl%" data-type="article">
+                        <meta property="article:published_time" content="%created%">
+                        <meta property="article:modified_time" content="%lastmod%">
+                    </app-subsection-head>
+
                     <app-subsection-body>
                         <app-use-template name="receta">
-                            <app-use-template name="receta-header" data-title="Pollo con patatas"
-                                data-img="pollo-con-patatas-al-horno" data-imgdesc="Imagen de pollo con patatas">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, earum eligendi id sunt
-                                eveniet eaque quam voluptatibus officiis iure laudantium quae animi ipsum culpa, dolorem
-                                est
-                                repellendus cum, at unde.
+                            <app-use-template name="receta-header" data-title="%title%"
+                                data-img="%recipe.header.img.src%" data-imgdesc="%recipe.header.img.desc%">
+                                %recipe.header.body%
                             </app-use-template>
 
-                            <app-use-template name="receta-info" data-comensales="2 comensales"
-                                data-tiempo="30 minutos"></app-use-template>
+                            <app-use-template name="receta-info" data-comensales="%recipe.diners% comensales"
+                                data-tiempo="%recipe.time%"></app-use-template>
 
-                            <app-use-template name="receta-ingredientes" data-img="pollo-con-patatas-al-horno"
-                                data-imgdesc="Imagen de pollo con patatas">
-                                <li>4 patatas medianas</li>
-                                <li>2 cucharadas de aceite de oliva</li>
-                                <li>1 cucharadita de pimentón dulce</li>
-                                <li>1 diente de ajo picado</li>
-                                <li>Sal y pimienta al gusto</li>
-                                <li>Romero o tomillo fresco (opcional)</li>
+                            <app-use-template name="receta-ingredientes" data-img="%recipe.ingredients.img.src%"
+                                data-imgdesc="%recipe.ingredients.img.desc%">
+                                "%recipe.ingredients.list%"
                             </app-use-template>
 
                             <app-use-template name="receta-elaboracion">
+                                %recipe.elaboration%
                                 <app-use-template name="receta-paso" data-img="pollo-con-patatas-al-horno"
                                     data-imgdesc="Imagen de pollo con patatas">
                                     Precalienta el horno a 200°C.
@@ -241,30 +248,11 @@
                                 <li>Sirve calientes como acompañamiento o plato principal.</li>
                             </app-use-template>
                         </app-use-template>
-
                     </app-subsection-body>
                 </app-subsection>
-                <app-subsection name="pavo con batatas" featured data-img="pavo.webp">
-                    <app-subsection-body>
-                        <p>mas html para la subsection de pavo con batatas</p>
-
-                        <p>mas html para la subsection de pavo con batatas</p>
-                    </app-subsection-body>
-                </app-subsection>
-            </app-section>
-
-        </app-section-group>
-        <app-section-group name="prueba">
-            <app-section name="prueba" lastmod="2025-05-25T19:44:06" data-icon="aves">
-                <app-section-head>
-                    <title>Prueba</title>
-                    <meta name="description" content="Aprende a preparar recetas de aves de caza">
-                </app-section-head>
-                <app-section-index>
-                    seccion de prueba
-                </app-section-index>
-            </app-section>
-        </app-section-group>
+            </app-subsection-template>
+        </app-section-templates>
+        
         <app-footer>
             <footer class="bg-yellow-600 text-white mt-12">
                 <section
@@ -351,7 +339,7 @@
         <header class="pb-4 sm:pb-6">
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
             <figure class="w-full">
-                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
+                <img itemprop="image" src="$URL/img/comida/${img}.webp" title="${imgdesc}" alt="${imgdesc}"
                     class="w-full mt-2 h-auto object-cover" />
                 <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
                     ${imgdesc}

@@ -67,7 +67,10 @@ root.innerHTML = html;
 
 setAppContext(document, root, DIST_DIR);
 
-generateDist();
+copyRecursiveSync(PUBLIC_DIR, DIST_DIR);
+
+
+generateDist(appName);
 
 // console.log(root.innerHTML)
 
@@ -75,7 +78,6 @@ generateDist();
 
 // Copiar contenido de public y src directamente a dist/
 
-copyRecursiveSync(PUBLIC_DIR, DIST_DIR);
 
 const DIST_STYLES_DIR = path.join(DIST_DIR, 'styles');
 

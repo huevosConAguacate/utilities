@@ -2,6 +2,8 @@
 import fs from 'fs';
 import path from 'path';
 
+import { pages } from './pages.js';
+
 const extensionSitemap = 'xml';
 let root = null;
 let document = null;
@@ -21,7 +23,7 @@ export const setAppContext = (doc, htmlRoot, dir) => {
   document = doc;
   root = htmlRoot;
   distDir = dir;
-  data.url = root.querySelector('meta[property="url"]').getAttribute('content');
+  data.url = root.querySelector('meta[property="og:url"]').getAttribute('content');
   data.adsenseAccount = root.querySelector('meta[name="google-adsense-account"]')?.getAttribute('content') ?? '';
 }
 
@@ -96,6 +98,43 @@ const clearVars = () => {
     if (!name || value === null) continue;
     root.innerHTML = root.innerHTML.replaceAll(`\$${name}`, value);
   }
+}
+
+const clearSectionsTemplates = (appName) => {
+  const sectionTemplates = root.querySelector('app-section-templates');
+  const dataProject = pages.projects[appName].groupSections;
+  const sectionTemplate = sectionTemplates.querySelector('app-section-template').innerHTML;
+  const subsectionTemplate = sectionTemplates.querySelector('app-subsection-template').innerHTML;
+  let htmlFinal = '';
+  const clearVars = (data, template, functions) => {
+    const getNestedValue = (obj, path) => {
+      return path.split('.').reduce((acc, key) => {
+        return acc && acc[key] !== undefined ? acc[key] : '';
+      }, obj);
+    };
+    return template.replace(/%([\w.]+)%/g, (_, keyPath) => {
+      let value = getNestedValue(data, keyPath);
+      value = functions[keyPath] ? functions[keyPath](value) : value;
+      return typeof value === 'string' || typeof value === 'number' ? value : '';
+    });
+  }
+  for (let groupSection of dataProject) {
+    const { name } = groupSection;
+    for (let section of groupSection.sections) {
+      const { data, subsections } = section;
+      let html = clearVars({...data, sectionGroupName: name}, sectionTemplate, groupSection.render?.sections ?? {});
+      let htmlSubsections = '';
+      for (let subsection of subsections) {
+        const {data} = subsection;
+        const htmlSubsection = clearVars(data, subsectionTemplate, groupSection.render?.subsections ?? {});
+        htmlSubsections += htmlSubsection;
+      }
+      html = html.replace('<app-subsections></app-subsections>',htmlSubsections);
+      htmlFinal += html;
+    }
+  }
+  sectionTemplates.innerHTML = htmlFinal;
+  unwrapTag('app-section-templates');
 }
 
 const clearTemplates = () => {
@@ -214,6 +253,7 @@ const getHead = (section, headTag, sectionPath = '') => {
 
     <head>
       ${htmlHead}
+      ${sectionHead?.innerHTML ?? ''}
     </head>`;
 }
 
@@ -255,7 +295,7 @@ const generatePages = () => {
     const sectionheader = section.querySelector('app-section-header')?.innerHTML ?? '';
     const sectionFooter = section.querySelector('app-section-footer')?.innerHTML ?? '';
     const sectionIndex = section.querySelector('app-section-index')?.innerHTML ?? '';
-    const sectionLayout = section.querySelector('app-section-layout')?.innerHTML ?? ''; 
+    const sectionLayout = section.querySelector('app-section-layout')?.innerHTML ?? '';
     for (let subSection of subSections) {
       const nameSubSection = subSection.getAttribute('name');
       const subSectionPath = clearName([nameSection, nameSubSection].join('/'));
@@ -294,14 +334,22 @@ const generateSitemaps = () => {
 `;
     const getSitemapDataImgFromSection = (element) => {
       const imgs = element.getElementsByTagName('img');
+      const seenSrcs = new Set();
       let dataImg = '';
+
       for (let img of imgs) {
-        dataImg += `<image:image>
-      <image:loc>${img.getAttribute('src')}</image:loc>
-    </image:image>`;
+        const src = img.getAttribute('src');
+        if (src && !seenSrcs.has(src)) {
+          seenSrcs.add(src);
+          dataImg +=
+            `\n <image:image>
+   <image:loc>${src}</image:loc>
+ </image:image>`;
+        }
       }
+
       return dataImg;
-    }
+    };
     const subsections = section.getElementsByTagName('app-subsection');
     let sitemapSection = '';
     sitemapSection += `<url>
@@ -337,9 +385,10 @@ const generateSEOFiles = () => {
   generateAds();
 }
 
-export const generateDist = () => {
+export const generateDist = (appName) => {
   setAttributeForTags('img', 'loading', 'lazy');
   clearVars();
+  clearSectionsTemplates(appName);
   clearTemplates();
   clearForEachSections();
   clearForEachSubsections();
