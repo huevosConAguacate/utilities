@@ -11,7 +11,7 @@
 </app-vars>
 
 <app-head data-title="Ideas Fáciles y Saludables" data-type="website" data-image="portada"
-    data-description="$DESCRIPTION">
+    data-description="$DESCRIPTION" data-lastmod="">
 
     <!-- Icono y título -->
     <link rel="icon" type="image/x-icon" href="$URL/img/logo.ico">
@@ -42,7 +42,7 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/webp">
-    <meta property="og:updated_time" content="$VALUE">
+    <meta property="og:updated_time" content="${lastmod}">
 
     <!-- Twitter Card -->
     <!-- <meta property="twitter:site" content="@recetaGratis"> -->
@@ -74,25 +74,22 @@
                             <img src="$URL/img/logo.webp" alt="Logo $APP_NAME" class="h-8 w-8 object-contain" />
                             $APP_NAME
                         </a>
+                        <app-use-template name="buscador"></app-use-template>
                         <label for="menu-toggle" class="md:hidden cursor-pointer text-gray-600">
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </label>
-                        <ul class="hidden md:flex font-medium h-16" itemscope
-                            itemtype="https://schema.org/BreadcrumbList">
+                        <ul class="hidden md:flex font-medium h-16">
                             <app-use-template name="menu-item" data-label="Inicio" data-url=""></app-use-template>
                             <app-use-template name="menu-dropdown-item" data-label="Recetas">
-                                <app-forEach-section sectionGroup="comida">
+                                <app-forEach-section sectionGroup="recipes">
                                     <li class="hover:bg-yellow-100 transition-colors duration-200">
                                         <a href="$URL/${section.path}"
                                             class="flex items-center px-4 py-2 w-full h-full">
-                                            <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M5 12h14M12 5l7 7-7 7" />
-                                            </svg>
+                                            <img class="w-5 h-5 mr-2 rounded-full" alt="${section.name}"
+                                                src="$URL/img/recipes/categories/${section.path}.webp">
                                             ${section.name}
                                         </a>
                                     </li>
@@ -104,16 +101,14 @@
                 <input type="checkbox" id="menu-toggle" class="peer hidden" />
                 <nav class="fixed top-0 left-0 p-3 w-[280px] h-screen bg-white z-40 flex-col gap-2 mt-16 transition-transform duration-300 transform -translate-x-full
            peer-checked:translate-x-0 md:!translate-x-0 md:!hidden">
-                    <ul class="flex flex-col gap-2">
-                        <app-forEach-section sectionGroup="comida">
+                    <app-use-template name="buscador" data-class=""></app-use-template>
+                    <ul class="flex flex-col gap-2 mt-2">
+                        <app-forEach-section sectionGroup="recipes">
                             <li>
                                 <a href="$URL/${section.path}"
                                     class="flex items-center px-4 py-2 hover:bg-yellow-100 rounded">
-                                    <svg class="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
+                                    <img class="w-5 h-5 mr-2 rounded-full" alt="${section.name}"
+                                        src="$URL/img/recipes/categories/${section.path}.webp">
                                     ${section.name}
                                 </a>
                             </li>
@@ -135,13 +130,14 @@
                     <app-forEach-subsection featured limit="9">
                         <a href="$URL/${subsection.path}" class="block group">
                             <div class="relative h-64 rounded-xl overflow-hidden">
-                                <img src="$URL/img/comida/${subsection.img}.webp" alt="Imagen"
-                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-75 group-hover:blur-sm" />
+                                <img src="$URL/img/recipes/${subsection.img}.webp" alt="${subsection.img_desc}"
+                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:blur-sm" />
                                 <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
                                 <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
                                     <div
                                         class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
-                                        <h3 class="text-white text-xl font-semibold mb-1">
+                                        <h3
+                                            class="text-white text-xl font-semibold mb-1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                                             ${subsection.name}
                                         </h3>
                                         <p
@@ -162,7 +158,7 @@
                             class="flex flex-col items-center opacity-0 animate-fade-up motion-safe:animate-fade-up-delay-0">
                             <div
                                 class="w-32 h-32 rounded-full bg-pink-100 flex items-center justify-center overflow-hidden">
-                                <img src="https://flowbite.com/docs/images/carousel/carousel-2.svg" alt="Imagen 1"
+                                <img src="$URL/img/recipes/categories/${section.path}.webp" alt="${section.name}"
                                     class="w-full h-full object-cover transition-transform duration-300 hover:scale-110" />
                             </div>
                             <p class="mt-4 text-center text-gray-700 font-medium">${section.name}</p>
@@ -175,7 +171,7 @@
             <app-section-template>
                 <app-section-group name="%sectionGroupName%">
                     <app-section name="%title%" lastmod="%lastmod%">
-                        <app-section-head data-title="%title%"></app-section-head>
+                        <app-section-head data-title="%title%" data-lastmod="%lastmod%"></app-section-head>
                         <app-section-header>
                             <!-- cabecera de %title% -->
                         </app-section-header>
@@ -188,19 +184,27 @@
                                     <app-children></app-children>
                                 </div>
                                 <div class="md:col-span-1 border-l border-gray-500 md:pl-4">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur odit, impedit
-                                    laudantium libero reprehenderit temporibus sapiente dicta! Sunt provident fugit,
-                                    accusantium
-                                    porro eos consequatur cupiditate magni, aliquam molestias et id!
+                                    <app-use-template name="section-normal" data-title="Recetas relacionadas">
+                                        <app-forEach-subsection name="%title%" data-description data-tiempo_value
+                                            data-tiempo_label>
+                                            <div removeActualPath="${subsection.path}">
+                                                <a href="$URL/${subsection.path}"
+                                                    class="font-medium hover:underline text-amber-700 hover:text-amber-800">${subsection.name}</a>
+                                            </div>
+                                        </app-forEach-subsection>
+                                    </app-use-template>
                                 </div>
                             </div>
                         </app-section-layout>
                         <app-section-index>
-                            <p>Esto aparecerá solo en el index.html de %title%</p>
-                            <app-forEach-subsection name="%title%">
-                                <p>${subsection.name}</p>
-                                <p>${subsection.path}</p>
-                                <p>${subsection.img}</p>
+                            <app-use-template name="header" data-title="%title%"
+                                data-body="%description%"></app-use-template>
+                            <app-forEach-subsection name="%title%" data-description data-tiempo_value data-tiempo_label>
+                                <app-use-template name="item-recipe" data-path="${subsection.path}"
+                                    data-img="${subsection.img}" data-subsection_name="${subsection.name}"
+                                    data-tiempo_value="${subsection.tiempo_value}"
+                                    data-tiempo_label="${subsection.tiempo_label}"
+                                    data-description="${subsection.description}"></app-use-template>
                             </app-forEach-subsection>
                         </app-section-index>
                         <app-subsections></app-subsections>
@@ -208,15 +212,14 @@
                 </app-section-group>
             </app-section-template>
             <app-subsection-template>
-                <app-subsection name="%title%" %featured% data-img="%socialImageUrl%"
-                    data-description="%description%">
-                    <app-subsection-head data-title="%title%"
-                        data-description="%description%"
-                        data-image="comida/%socialImageUrl%" data-type="article">
+                <app-subsection name="%title%" %featured% data-img="%socialImageUrl%" data-img_desc="%title%"
+                    data-description="%description%" data-tiempo_label="%recipe.time.label%"
+                    data-tiempo_value="%recipe.time.value%">
+                    <app-subsection-head data-title="%title%" data-description="%description%"
+                        data-image="recipes/%socialImageUrl%" data-type="article" data-lastmod="%lastmod%">
                         <meta property="article:published_time" content="%created%">
                         <meta property="article:modified_time" content="%lastmod%">
                     </app-subsection-head>
-
                     <app-subsection-body>
                         <app-use-template name="receta">
                             <app-use-template name="receta-header" data-title="%title%"
@@ -224,35 +227,39 @@
                                 %recipe.header.body%
                             </app-use-template>
 
-                            <app-use-template name="receta-info" data-comensales="%recipe.diners% comensales"
-                                data-tiempo="%recipe.time%"></app-use-template>
+                            <app-use-template name="receta-info" data-comensales="%recipe.diners%"
+                                data-tiempo_label="%recipe.time.label%"
+                                data-tiempo_value="%recipe.time.value%"></app-use-template>
 
                             <app-use-template name="receta-ingredientes" data-img="%recipe.ingredients.img.src%"
                                 data-imgdesc="%recipe.ingredients.img.desc%">
-                                "%recipe.ingredients.list%"
+                                %recipe.ingredients.list%
                             </app-use-template>
 
                             <app-use-template name="receta-elaboracion">
                                 %recipe.elaboration%
-                                <app-use-template name="receta-paso" data-img="pollo-con-patatas-al-horno"
-                                    data-imgdesc="Imagen de pollo con patatas">
-                                    Precalienta el horno a 200°C.
-                                </app-use-template>
-                                <li>Lava bien las patatas y córtalas en gajos.</li>
-                                <li>En un bol, mezcla las patatas con el aceite, pimentón, ajo, sal, pimienta y
-                                    las
-                                    hierbas.
-                                </li>
-                                <li>Coloca las patatas en una bandeja de horno con papel vegetal.</li>
-                                <li>Hornea durante 35-40 minutos hasta que estén doradas y crujientes.</li>
-                                <li>Sirve calientes como acompañamiento o plato principal.</li>
                             </app-use-template>
                         </app-use-template>
                     </app-subsection-body>
                 </app-subsection>
             </app-subsection-template>
         </app-section-templates>
-        
+        <app-section-group name="busqueda">
+            <app-section name="busqueda">
+                <app-section-index>
+                    <app-section-head data-title="$TITLE $TITLE_SEPARATOR Búsqueda" data-type="website">
+
+                        <script async>
+                            const paramsString = window.location.search;
+                            const searchParams = new URLSearchParams(paramsString);
+                            const query = searchParams.get("q") ?? '';
+                            
+
+                        </script>
+                    </app-section-head>
+                </app-section-index>
+            </app-section>
+        </app-section-group>
         <app-footer>
             <footer class="bg-yellow-600 text-white mt-12">
                 <section
@@ -287,6 +294,20 @@
 </app-body>
 <app-templates>
 
+    <app-template name="buscador" data-class="hidden md:">
+        <form action="$URL/busqueda/index.html" method="GET" class="${class}flex items-center gap-2">
+            <input type="text" name="q" autocomplete="off" placeholder="¿Qué quieres cocinar hoy?"
+                class="px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm w-54 lg:w-64" />
+            <button type="submit" class="text-gray-600 hover:text-yellow-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
+                </svg>
+            </button>
+        </form>
+    </app-template>
+
     <app-template name="header" data-title data-body>
         <header class="pb-4 sm:pb-6">
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
@@ -302,18 +323,15 @@
     </app-template>
 
     <app-template name="menu-item" data-label data-url>
-        <li class="h-full flex items-center" itemprop="itemListElement" itemscope
-            itemtype="https://schema.org/ListItem">
-            <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600" itemprop="item"><span
-                    itemprop="name">${label}</span></a>
+        <li class="h-full flex items-center">
+            <a href="$URL${url}" class="h-full flex items-center px-4 hover:text-yellow-600"><span>${label}</span></a>
         </li>
     </app-template>
 
     <app-template name="menu-dropdown-item" data-label="NO LABEL">
-        <li class="relative group h-full flex items-center" itemprop="itemListElement" itemscope
-            itemtype="https://schema.org/ListItem">
+        <li class="relative group h-full flex items-center">
             <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
-                <span itemprop="name">${label}</span>
+                <span>${label}</span>
                 <!-- Flecha que rota al hacer hover -->
                 <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,7 +347,7 @@
 
     <app-template name="receta">
 
-        <article itemscope itemtype="https://schema.org/NewsArticle">
+        <article>
             <app-children></app-children>
         </article>
 
@@ -337,21 +355,21 @@
 
     <app-template name="receta-header" data-title data-img data-imgdesc>
         <header class="pb-4 sm:pb-6">
-            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600" itemprop="headline">${title}</h1>
+            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
             <figure class="w-full">
-                <img itemprop="image" src="$URL/img/comida/${img}.webp" title="${imgdesc}" alt="${imgdesc}"
-                    class="w-full mt-2 h-auto object-cover" />
+                <img src="$URL/img/recipes/${img}.webp" alt="${imgdesc}" class="w-full mt-2 h-auto object-cover" />
                 <figcaption class="text-center text-gray-500 text-xs sm:text-sm mt-2">
                     ${imgdesc}
                 </figcaption>
             </figure>
-            <p class="mt-1 sm:mt-2" itemprop="articleBody">
+            <p class="mt-1 sm:mt-2">
                 <app-children></app-children>
             </p>
         </header>
     </app-template>
 
-    <app-template name="receta-info" data-comensales="1 comensal" data-tiempo="20 minutos">
+    <app-template name="receta-info" data-comensales="1 comensal" data-tiempo_label="20 minutos"
+        data-tiempo_value="PT20M">
         <div class="grid grid-cols-2 gap-6 mb-6">
             <div class="flex items-center space-x-2">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -360,7 +378,7 @@
                     </path>
                 </svg>
                 <span class="text-lg font-medium text-gray-700">Para</span>
-                <span class="text-lg font-semibold text-gray-900" itemprop="recipeYield">${comensales}</span>
+                <span class="text-lg font-semibold text-gray-900">${comensales}</span>
             </div>
             <div class="flex items-center space-x-2">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -369,7 +387,7 @@
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <span class="text-lg font-medium text-gray-700">Tiempo total:</span>
-                <time class="text-lg font-semibold text-gray-900" itemprop="totalTime" datetime="PT30M">${tiempo}</time>
+                <time class="text-lg font-semibold text-gray-900" datetime="${tiempo_value}">${tiempo_label}</time>
             </div>
         </div>
     </app-template>
@@ -380,8 +398,7 @@
                 Ingredientes
             </h2>
             <figure class="w-full">
-                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
-                    class="w-full mt-2 mb-2 h-auto object-cover" />
+                <img src="$URL/img/recipes/${img}.webp" alt="${imgdesc}" class="w-full mt-2 mb-2 h-auto object-cover" />
             </figure>
             <ul class="list-disc list-inside space-y-1 sm:space-y-2">
                 <app-children></app-children>
@@ -390,11 +407,10 @@
     </app-template>
 
     <app-template name="receta-paso" data-img="" data-imgdesc="Imagen de comida">
-        <li>
+        <li class="pt-6 pb-2">
             <app-children></app-children>
             <figure class="w-full">
-                <img itemprop="image" src="$URL/img/comida/${img}.webp" alt="${imgdesc}"
-                    class="w-full mt-2 h-auto object-cover" />
+                <img src="$URL/img/recipes/${img}.webp" alt="${imgdesc}" class="w-full mt-2 h-auto object-cover" />
             </figure>
         </li>
     </app-template>
@@ -404,10 +420,32 @@
             <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
                 Elaboración
             </h2>
-            <ol class="list-decimal list-inside space-y-1 sm:space-y-2">
+            <ol class="list-decimal list-inside space-y-1 sm:space-y-2 marker:font-bold marker:text-xl">
                 <app-children></app-children>
             </ol>
         </section>
+    </app-template>
+
+    <app-template name="item-recipe" data-path data-img data-subsection_name data-tiempo_value data-tiempo_label
+        data-description>
+        <a href="$URL/${path}" class="block hover:shadow-lg transition-shadow duration-200 mt-4">
+            <div class="flex flex-col sm:flex-row gap-4 bg-white rounded-xl shadow-md overflow-hidden p-4">
+                <img src="$URL/img/recipes/${img}.webp" alt="Croquetas de patata y pollo"
+                    class="w-full sm:w-48 h-36 object-cover rounded-md" />
+                <div class="flex flex-col flex-1">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">
+                            <p class="hover:underline text-amber-700 hover:text-amber-800">
+                                ${subsection_name}</p>
+                        </h2>
+                        <time class="text-sm text-gray-500 mt-1" datetime="${tiempo_value}">${tiempo_label}</time>
+                    </div>
+                    <p class="mt-1 text-gray-700 text-sm leading-relaxed line-clamp-3">
+                        ${description}
+                    </p>
+                </div>
+            </div>
+        </a>
     </app-template>
 
 

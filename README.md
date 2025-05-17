@@ -30,6 +30,8 @@ SEO es la sigla para Search Engine Optimization, que significa "optimización pa
 
 - [https://pagespeed.web.dev/](https://pagespeed.web.dev/)
 
+- [Documentacion yoast SEO](https://developer.yoast.com/features/opengraph/functional-specification/)
+
 - [Palabras clave | neilpatel](https://app.neilpatel.com/es/ubersuggest/overview/?)
 
 - [Palabras clave | seranking](https://online.seranking.com/research.keywords.html/packet) seranking123#

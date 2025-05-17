@@ -11,7 +11,8 @@ let distDir = null;
 
 const data = {
   url: '',
-  adsenseAccount: ''
+  adsenseAccount: '',
+  project: null,
 }
 
 export const throwError = (error) => {
@@ -100,21 +101,35 @@ const clearVars = () => {
   }
 }
 
-const clearSectionsTemplates = (appName) => {
+const clearSectionsTemplates = () => {
+  const dataProject = data.project;
   const sectionTemplates = root.querySelector('app-section-templates');
-  const dataProject = pages.projects[appName].groupSections;
   const sectionTemplate = sectionTemplates.querySelector('app-section-template').innerHTML;
   const subsectionTemplate = sectionTemplates.querySelector('app-subsection-template').innerHTML;
   let htmlFinal = '';
   const clearVars = (data, template, functions) => {
     const getNestedValue = (obj, path) => {
       return path.split('.').reduce((acc, key) => {
-        return acc && acc[key] !== undefined ? acc[key] : '';
+        return acc && acc[key] !== undefined ? acc[key] : undefined;
       }, obj);
     };
+
+    const findFallbackKey = (keyPath) => {
+      const parts = keyPath.split('.');
+      while (parts.length > 0) {
+        const attempt = parts.join('.');
+        const value = getNestedValue(data, attempt);
+        if (value !== undefined) return { key: attempt, value };
+        parts.pop();
+      }
+      return { key: null, value: '' };
+    };
+
     return template.replace(/%([\w.]+)%/g, (_, keyPath) => {
-      let value = getNestedValue(data, keyPath);
-      value = functions[keyPath] ? functions[keyPath](value) : value;
+      const { key: fallbackKey, value: rawValue } = findFallbackKey(keyPath);
+      const fn = functions[keyPath] || (fallbackKey && functions[fallbackKey]);
+
+      let value = fn ? fn(rawValue) : rawValue;
       return typeof value === 'string' || typeof value === 'number' ? value : '';
     });
   }
@@ -122,14 +137,14 @@ const clearSectionsTemplates = (appName) => {
     const { name } = groupSection;
     for (let section of groupSection.sections) {
       const { data, subsections } = section;
-      let html = clearVars({...data, sectionGroupName: name}, sectionTemplate, groupSection.render?.sections ?? {});
+      let html = clearVars({ ...data, sectionGroupName: name }, sectionTemplate, groupSection.render?.sections?.templates ?? {});
       let htmlSubsections = '';
       for (let subsection of subsections) {
-        const {data} = subsection;
-        const htmlSubsection = clearVars(data, subsectionTemplate, groupSection.render?.subsections ?? {});
+        const { data } = subsection;
+        const htmlSubsection = clearVars(data, subsectionTemplate, groupSection.render?.subsections?.templates ?? {});
         htmlSubsections += htmlSubsection;
       }
-      html = html.replace('<app-subsections></app-subsections>',htmlSubsections);
+      html = html.replace('<app-subsections></app-subsections>', htmlSubsections);
       htmlFinal += html;
     }
   }
@@ -167,13 +182,15 @@ const clearForEachSections = () => {
     let sectionGroup = forEachSection.getAttribute('sectionGroup');
     const sections = root.getElementsByTagName('app-section');
     for (let section of sections) {
+      const nameSection = section.getAttribute('name');
+      if (nameSection === 'busqueda') continue;
       const parent = section.parentElement;
       if (!section.getAttribute('sectionGroup') && parent?.tagName.toLowerCase() === 'app-section-group') {
         section.setAttribute('sectionGroup', parent?.getAttribute('name'))
       }
       if (sectionGroup && sectionGroup !== section.getAttribute('sectionGroup')) continue;
       let html = forEachSection.innerHTML;
-      const nameSection = section.getAttribute('name');
+      
       const pathSection = clearName(nameSection);
       const values = {
         name: nameSection, path: pathSection,
@@ -192,6 +209,7 @@ const clearForEachSubsections = () => {
   const forEachSubsections = root.getElementsByTagName('app-forEach-subsection');
   for (let forEachSubsection of forEachSubsections) {
     const isFeatured = forEachSubsection.getAttribute('featured') !== null;
+    const excludePath = forEachSubsection.getAttribute('excludePath');
     const limit = Number(forEachSubsection.getAttribute('limit') ?? 100);
     let html = '';
     let forEachSubsectionName = forEachSubsection.getAttribute('section');
@@ -285,7 +303,9 @@ const generateIndex = () => {
   createFile(getHead(null) + getPrincipalWrapper(appIndex), 'index.html');
 }
 
+
 const generatePages = () => {
+  const dataProject = data.project;
   generateIndex();
   const sections = root.getElementsByTagName('app-section');
   for (let section of sections) {
@@ -295,16 +315,24 @@ const generatePages = () => {
     const sectionheader = section.querySelector('app-section-header')?.innerHTML ?? '';
     const sectionFooter = section.querySelector('app-section-footer')?.innerHTML ?? '';
     const sectionIndex = section.querySelector('app-section-index')?.innerHTML ?? '';
-    const sectionLayout = section.querySelector('app-section-layout')?.innerHTML ?? '';
+    const elementSectionLayout = section.querySelector('app-section-layout');
     for (let subSection of subSections) {
       const nameSubSection = subSection.getAttribute('name');
       const subSectionPath = clearName([nameSection, nameSubSection].join('/'));
+      const removeActualPath = elementSectionLayout.querySelectorAll('[removeActualPath]');
+      for (let element of removeActualPath) {
+        if (element.getAttribute('removeActualPath') === subSectionPath) {
+          element.classList.add('hidden')
+        } else element.classList.remove('hidden')
+      }
+      const sectionLayout = elementSectionLayout?.innerHTML ?? '';
       const htmlHeader = getHead(subSection, 'app-subsection-head', subSectionPath);
       let htmlSubSection = subSection.querySelector('app-subsection-body').innerHTML;
       if (sectionLayout) {
         htmlSubSection = sectionLayout.replace('<app-children></app-children>', htmlSubSection);
       }
       const htmlFinal = getPrincipalWrapper(sectionheader + htmlSubSection + sectionFooter);
+
       createFile(htmlHeader + htmlFinal, subSectionPath, 'index.html');
     }
     const htmlHeader = getHead(section, 'app-section-head', sectionPath);
@@ -386,13 +414,15 @@ const generateSEOFiles = () => {
 }
 
 export const generateDist = (appName) => {
+  data.project = pages.projects[appName].groupSections;
   setAttributeForTags('img', 'loading', 'lazy');
   clearVars();
-  clearSectionsTemplates(appName);
+  clearSectionsTemplates();
   clearTemplates();
   clearForEachSections();
   clearForEachSubsections();
   unwrapTag('app-forEach-section');
+  unwrapTag('app-section-head');
   generatePages();
   generateSEOFiles();
 }

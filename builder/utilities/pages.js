@@ -3,19 +3,72 @@ export const pages = {
         misDeliciasDeCocina: {
             groupSections: [
                 {
-                    name: "comida",
+                    name: "recipes",
                     render: {
                         sections: {
+                            structuredData: {
+                                recipe: (value) => {
+                                    return ['Dato estructurado 1', 'Dato estructurado 2']
+                                }
+                            },
+                            templates: {
 
+                            }
                         },
                         subsections: {
-                            featured: (value) => value ? 'featured' : ''
+                            structuredData: {
+                                recipe: (value) => {
+                                    return ['Dato estructurado 1', 'Dato estructurado 2']
+                                }
+                            },
+                            templates: {
+                                featured: (value) => value ? 'featured' : '',
+                                "recipe.diners": (value) => value === 1 ? '1 comensal' : `${value} comensales`,
+                                "recipe.ingredients.list": (value) => value.map(item => `<li>${item}</li>`).join('\n'),
+                                "recipe.time.label": (value) => {
+                                    const [value1, value2 = null] = value.split(' ').map((v) => Number(v));
+                                    let hours = 0, minutes = 0;
+                                    if (value2 !== null) {
+                                        hours = value1;
+                                        minutes = value2;
+                                    } else {
+                                        minutes = value1;
+                                    }
+                                    const parts = [];
+                                    if (hours > 0) parts.push(`${hours} hora${hours > 1 ? 's' : ''}`);
+                                    if (minutes > 0) parts.push(`${minutes} minuto${minutes > 1 ? 's' : ''}`);
+                                    return parts.join(' y ');
+                                },
+                                "recipe.time.value": (value) => {
+                                    const [value1, value2 = null] = value.split(' ').map((v) => Number(v));
+                                    let hours = 0, minutes = 0;
+
+                                    if (value2 !== null) {
+                                        hours = value1;
+                                        minutes = value2;
+                                    } else {
+                                        minutes = value1;
+                                    }
+
+                                    let isoString = 'PT';
+                                    if (hours > 0) isoString += `${hours}H`;
+                                    if (minutes > 0) isoString += `${minutes}M`;
+
+                                    return isoString;
+                                },
+                                "recipe.elaboration": (value) => {
+                                    return value.map(({ img, step }) => {
+                                        return `<app-use-template name="receta-paso" data-img="${img.src}" data-imgdesc="${img.desc}">${step}</app-use-template>`;
+                                    }).join('\n');
+                                }
+                            },
                         }
                     },
                     sections: [
                         {
                             data: {
                                 title: "Aves de caza",
+                                description: "¡Las mejores recetas con aves y carnes de caza! Descubre las más fáciles recetas de aves al horno, rellenas, para Navidad, ocasiones especiales o cualquier día de la semana con estas preparaciones deliciosas que sorprenderán a todos tus comensales.",
                                 created: "2025-05-25T19:44:06",
                                 lastmod: "2025-05-25T19:44:06",
                             },
@@ -36,8 +89,8 @@ export const pages = {
                                                 },
                                                 body: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, earum eligendi id sunt"
                                             },
-                                            diners: 2,
-                                            time: "30 minutos",
+                                            diners: 1,
+                                            time: "1 30",
                                             ingredients: {
                                                 img: {
                                                     src: "pollo-con-patatas-al-horno",
@@ -107,7 +160,7 @@ export const pages = {
                                         lastmod: "2025-05-16T18:40:06",
                                         socialImageUrl: "pavo-con-batatas-al-horno",
                                         description: "Una receta deliciosa y nutritiva de pavo al horno con batatas.",
-                                        featured: false,
+                                        featured: true,
                                         recipe: {
                                             header: {
                                                 img: {
@@ -117,7 +170,7 @@ export const pages = {
                                                 body: "Disfruta de una receta saludable de pavo al horno acompañado de batatas asadas. Perfecta para una cena ligera y nutritiva."
                                             },
                                             diners: 4,
-                                            time: "45 minutos",
+                                            time: "45",
                                             ingredients: {
                                                 img: {
                                                     src: "pavo-con-batatas-al-horno",
