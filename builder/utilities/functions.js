@@ -209,11 +209,11 @@ const clearForEachSubsections = () => {
   const forEachSubsections = root.getElementsByTagName('app-forEach-subsection');
   for (let forEachSubsection of forEachSubsections) {
     const isFeatured = forEachSubsection.getAttribute('featured') !== null;
-    const excludePath = forEachSubsection.getAttribute('excludePath');
+    const all = forEachSubsection.getAttribute('all') !== null;
     const limit = Number(forEachSubsection.getAttribute('limit') ?? 100);
     let html = '';
     let forEachSubsectionName = forEachSubsection.getAttribute('section');
-    if (!forEachSubsectionName) {
+    if (!all && !forEachSubsectionName) {
       let parent = forEachSubsection.parentElement;
       while (parent && parent.tagName.toLowerCase() !== 'app-section') {
         parent = parent.parentElement;
@@ -225,7 +225,7 @@ const clearForEachSubsections = () => {
     for (let section of sections) {
       const sectionName = section.getAttribute('name');
       const pathSection = clearName(sectionName);
-      if (isFeatured || (sectionName === forEachSubsectionName)) {
+      if (all || isFeatured || (sectionName === forEachSubsectionName)) {
         const subsections = (isFeatured ? root : section).getElementsByTagName('app-subsection');
         for (let subsection of subsections) {
           const subsectionIsFeatured = subsection.getAttribute('featured') !== null;

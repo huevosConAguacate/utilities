@@ -125,32 +125,12 @@
         <app-index>
             <app-use-template name="header" data-title="Recetas de cocina caseras y rápidas explicadas paso a paso"
                 data-body="Explora nuestras recetas de cocina fáciles, saludables y rápidas. ¡Cocina como un chef en casa!"></app-use-template>
-            <app-use-template name="section-normal" data-title="Recetas destacadas">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <app-forEach-subsection featured limit="9">
-                        <a href="$URL/${subsection.path}" class="block group">
-                            <div class="relative h-64 rounded-xl overflow-hidden">
-                                <img src="$URL/img/recipes/${subsection.img}.webp" alt="${subsection.img_desc}"
-                                    class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:blur-sm" />
-                                <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
-                                <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
-                                    <div
-                                        class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
-                                        <h3
-                                            class="text-white text-xl font-semibold mb-1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                                            ${subsection.name}
-                                        </h3>
-                                        <p
-                                            class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                            ${subsection.description}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </app-forEach-subsection>
-                </div>
+
+            <app-use-template name="recetas-destacadas">
+
             </app-use-template>
+
+
             <div class="flex justify-center mt-12 gap-8">
                 <app-forEach-section>
                     <a href="$URL/${section.path}">
@@ -246,17 +226,110 @@
         </app-section-templates>
         <app-section-group name="busqueda">
             <app-section name="busqueda">
+                <app-section-head data-title="$TITLE $TITLE_SEPARATOR Búsqueda" data-type="website">
+
+                </app-section-head>
                 <app-section-index>
-                    <app-section-head data-title="$TITLE $TITLE_SEPARATOR Búsqueda" data-type="website">
+                    <script defer>
+                        window.onload = () => {
 
-                        <script async>
-                            const paramsString = window.location.search;
-                            const searchParams = new URLSearchParams(paramsString);
-                            const query = searchParams.get("q") ?? '';
-                            
+                            const getQuery = () => {
+                                const paramsString = window.location.search;
+                                const searchParams = new URLSearchParams(paramsString);
+                                const query = searchParams.get("q") ?? '';
+                                const inputBuscadores = document.querySelectorAll('.inputBuscador');
+                                for (inputBuscador of inputBuscadores)
+                                    inputBuscador.value = query;
+                                return query;
+                            }
 
-                        </script>
-                    </app-section-head>
+                            const getDataByQuery = (query) => {
+                                const raw = document.getElementById('subsections-json').innerHTML.trim();
+                                const cleaned = raw.replace(/,\s*\]$/, ']');
+                                try {
+                                    const data = JSON.parse(cleaned);
+                                    if (!query) return [];
+
+                                    const clearString = (str) => {
+                                        return str
+                                            .toLowerCase()
+                                            .normalize("NFD")
+                                            .replace(/[\u0300-\u036f]/g, "")        // elimina tildes
+                                            .replace(/[^a-z0-9]+/g, " ")            // reemplaza todo lo que no sea letra o número por espacio
+                                            .replace(/\s+/g, " ")                   // elimina espacios múltiples
+                                            .trim();
+                                    }
+                                    const words = clearString(query).split(" ");
+                                    return data.filter(item => {
+                                        if (!item.name) return false;
+                                        const name = clearString(item.name);
+                                        return words.some(word => name.includes(word));
+                                    });
+                                    return data;
+                                } catch (err) {
+                                    return [];
+                                }
+                            }
+                            const query = getQuery();
+                            const data = getDataByQuery(query);
+                            const title = document.querySelector('.title-section-normal');
+                            const containerRecipes = document.querySelector('#container-recipes');
+                            let titleText = '';
+                            if (!query || !data.length) {
+                                containerRecipes.innerHTML = '';
+                                titleText = `No se encontró nada por «${query}»`;
+                            } else {
+                                let htmlRecipes = '';
+                                titleText = `Recetas encontradas para «${query}»`;
+                                for (let recipe of data) {
+                                    let html = containerRecipes.innerHTML;
+                                    for (let [key, value] of Object.entries(recipe)) {
+                                        html = html.replaceAll(`RECIPE_${key.toUpperCase()}`, value);
+                                    }
+                                    htmlRecipes += html;
+                                }
+                                containerRecipes.innerHTML = htmlRecipes;
+                                containerRecipes.removeAttribute('hidden');
+                            }
+                            title.innerHTML = titleText;
+                            document.title = titleText;
+
+                            console.log(data);
+
+                        }
+                    </script>
+                    <div id="subsections-json" hidden>
+                        [
+                        <app-forEach-subsection all>
+                            {
+                            "path": "${subsection.path}",
+                            "img": "${subsection.img}",
+                            "name": "${subsection.name}",
+                            "description": "${subsection.description}",
+                            "time_label": "${subsection.tiempo_label}",
+                            "time_value": "${subsection.tiempo_value}"
+                            },
+                        </app-forEach-subsection>
+                        ]
+                    </div>
+                    <section class="pb-6 sm:pb-6 mt-2">
+                        <h1 class="title-section-normal text-2xl pb-3 sm:text-3xl font-bold text-yellow-600"></h1>
+                        <div id="container-recipes" hidden>
+                            <app-use-template name="item-recipe" data-path="RECIPE_PATH" data-img="RECIPE_IMG"
+                                data-subsection_name="RECIPE_NAME" data-tiempo_value="RECIPE_TIME_VALUE"
+                                data-tiempo_label="RECIPE_TIME_LABEL"
+                                data-description="RECIPE_DESCRIPTION"></app-use-template>
+                        </div>
+                        <app-use-template name="recetas-destacadas" data-title="Puedes echar un ojo a nuestras recetas destacadas">
+
+                        </app-use-template>
+                        <div class="mt-6 text-center">
+                            <a href="$URL"
+                                class="inline-block px-5 py-2 bg-orange-600 text-white font-medium rounded-lg shadow hover:bg-orange-700 transition">
+                                Volver al inicio
+                            </a>
+                        </div>
+                    </section>
                 </app-section-index>
             </app-section>
         </app-section-group>
@@ -296,8 +369,8 @@
 
     <app-template name="buscador" data-class="hidden md:">
         <form action="$URL/busqueda/index.html" method="GET" class="${class}flex items-center gap-2">
-            <input type="text" name="q" autocomplete="off" placeholder="¿Qué quieres cocinar hoy?"
-                class="px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm w-54 lg:w-64" />
+            <input type="text" name="q" autocomplete="off" required placeholder="¿Qué quieres cocinar hoy?"
+                class="inputBuscador px-3 py-1.5 border border-yellow-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm w-54 lg:w-64" />
             <button type="submit" class="text-gray-600 hover:text-yellow-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
@@ -317,7 +390,7 @@
 
     <app-template name="section-normal" data-title>
         <section class="pb-6 sm:pb-6 mt-2">
-            <h2 class="text-2xl pb-3 sm:text-3xl font-bold text-yellow-600">${title}</h2>
+            <h2 class="text-xl pb-3 sm:text-2xl font-bold text-yellow-600">${title}</h2>
             <app-children></app-children>
         </section>
     </app-template>
@@ -430,7 +503,7 @@
         data-description>
         <a href="$URL/${path}" class="block hover:shadow-lg transition-shadow duration-200 mt-4">
             <div class="flex flex-col sm:flex-row gap-4 bg-white rounded-xl shadow-md overflow-hidden p-4">
-                <img src="$URL/img/recipes/${img}.webp" alt="Croquetas de patata y pollo"
+                <img src="$URL/img/recipes/${img}.webp" alt="${subsection_name}"
                     class="w-full sm:w-48 h-36 object-cover rounded-md" />
                 <div class="flex flex-col flex-1">
                     <div>
@@ -438,7 +511,14 @@
                             <p class="hover:underline text-amber-700 hover:text-amber-800">
                                 ${subsection_name}</p>
                         </h2>
-                        <time class="text-sm text-gray-500 mt-1" datetime="${tiempo_value}">${tiempo_label}</time>
+                        <div class="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" class="shrink-0">
+                                <circle cx="12" cy="12" r="9" stroke-width="2" />
+                                <path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <time datetime="${tiempo_value}">Listo en: ${tiempo_label}</time>
+                        </div>
                     </div>
                     <p class="mt-1 text-gray-700 text-sm leading-relaxed line-clamp-3">
                         ${description}
@@ -448,6 +528,35 @@
         </a>
     </app-template>
 
+
+    <app-template name="recetas-destacadas" data-title="Recetas destacadas">
+        <app-use-template name="section-normal" data-title="${title}">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <app-forEach-subsection featured limit="6">
+                    <a href="$URL/${subsection.path}" class="block group">
+                        <div class="relative h-64 rounded-xl overflow-hidden">
+                            <img src="$URL/img/recipes/${subsection.img}.webp" alt="${subsection.img_desc}"
+                                class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:blur-sm" />
+                            <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
+                                <div
+                                    class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
+                                    <h3
+                                        class="text-white text-xl font-semibold mb-1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                        ${subsection.name}
+                                    </h3>
+                                    <p
+                                        class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        ${subsection.description}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </app-forEach-subsection>
+            </div>
+        </app-use-template>
+    </app-template>
 
 
 </app-templates>
