@@ -163,7 +163,7 @@
                                 <div class="md:col-span-2">
                                     <app-children></app-children>
                                 </div>
-                                <div class="md:col-span-1 border-l border-gray-500 md:pl-4">
+                                <div class="md:col-span-1 md:border-l border-gray-500 md:pl-4">
                                     <app-use-template name="section-normal" data-title="Recetas relacionadas">
                                         <app-forEach-subsection name="%title%" data-description data-tiempo_value
                                             data-tiempo_label>
@@ -272,12 +272,14 @@
                             }
                             const query = getQuery();
                             const data = getDataByQuery(query);
+                            const containerNotResults = document.querySelector('#container-not-results');
                             const title = document.querySelector('.title-section-normal');
                             const containerRecipes = document.querySelector('#container-recipes');
                             let titleText = '';
                             if (!query || !data.length) {
                                 containerRecipes.innerHTML = '';
                                 titleText = `No se encontró nada por «${query}»`;
+                                containerNotResults.removeAttribute('hidden');
                             } else {
                                 let htmlRecipes = '';
                                 titleText = `Recetas encontradas para «${query}»`;
@@ -320,14 +322,21 @@
                                 data-tiempo_label="RECIPE_TIME_LABEL"
                                 data-description="RECIPE_DESCRIPTION"></app-use-template>
                         </div>
-                        <app-use-template name="recetas-destacadas" data-title="Puedes echar un ojo a nuestras recetas destacadas">
-
-                        </app-use-template>
-                        <div class="mt-6 text-center">
-                            <a href="$URL"
-                                class="inline-block px-5 py-2 bg-orange-600 text-white font-medium rounded-lg shadow hover:bg-orange-700 transition">
-                                Volver al inicio
-                            </a>
+                        <div id="container-not-results" hidden>
+                            <app-use-template name="recetas-destacadas"
+                                data-title="Puedes echar un ojo a nuestras recetas destacadas">
+                            </app-use-template>
+                            <div class="mt-6 text-center">
+                                <a href="$URL"
+                                    class="inline-flex items-center gap-2 px-5 py-2 bg-orange-600 text-white font-medium rounded-lg shadow hover:bg-orange-700 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M3 12l9-9 9 9M4 10v10h5v-6h6v6h5V10" />
+                                    </svg>
+                                    Volver al inicio
+                                </a>
+                            </div>
                         </div>
                     </section>
                 </app-section-index>

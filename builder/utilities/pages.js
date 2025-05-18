@@ -5,15 +5,13 @@ export const pages = {
                 {
                     name: "recipes",
                     render: {
-                        sections: {
-                            structuredData: {
-                                recipe: (value) => {
-                                    return ['Dato estructurado 1', 'Dato estructurado 2']
-                                }
-                            },
-                            templates: {
-
+                        structuredData: {
+                            recipe: (page, html) => {
+                                return ['Dato estructurado 1', 'Dato estructurado 2']
                             }
+                        },
+                        templates: {
+
                         },
                         subsections: {
                             structuredData: {
