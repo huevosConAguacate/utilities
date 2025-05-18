@@ -1,7 +1,7 @@
 // Función recursiva para copiar carpetas
 import fs from 'fs';
 import path from 'path';
-
+import { JSDOM } from 'jsdom';
 import { pages } from './pages.js';
 
 const extensionSitemap = 'xml';
@@ -13,6 +13,7 @@ const data = {
   url: '',
   adsenseAccount: '',
   project: null,
+  structuredDataFunction: null
 }
 
 export const throwError = (error) => {
@@ -253,10 +254,9 @@ const clearForEachSubsections = () => {
 }
 
 
-
-
 const getHead = (section, headTag, sectionPath = '') => {
-  let headerData = {};
+  // app-subsection-head
+  // app-section-head
   const appHead = root.querySelector('app-head');
   const sectionHead = section?.querySelector(headTag);
   let htmlHead = appHead?.innerHTML ?? '';
@@ -265,6 +265,8 @@ const getHead = (section, headTag, sectionPath = '') => {
     const sectionValue = sectionHead?.dataset[key] ?? null;
     htmlHead = htmlHead.replaceAll(`\$\{${key}\}`, sectionValue ?? appHeadValue);
   }
+  // console.log({section, headTag, sectionPath})
+  
   return `
 <!DOCTYPE html>
     <html lang="es">
@@ -275,7 +277,7 @@ const getHead = (section, headTag, sectionPath = '') => {
     </head>`;
 }
 
-const getPrincipalWrapper = (content) => {
+const getPrincipalWrapper = (fileType, content) => {
   const appBody = root.querySelector('app-body');
   const appRoot = appBody.querySelector('app-root');
   const layout = appRoot.querySelector('app-layout');
@@ -287,28 +289,33 @@ const getPrincipalWrapper = (content) => {
     .join(' ');
 
   let htmlLayout = layout?.innerHTML;
-
   if (htmlLayout) {
     htmlLayout = htmlLayout.replace('<app-children></app-children>', content)
   }
-
-  return `<body ${bodyAttributes}>${appHeader}${htmlLayout ? htmlLayout : content}${appFooter}</body>`;
-
+  const body = `${appHeader}${htmlLayout ? htmlLayout : content}${appFooter}`;
+  const dom = new JSDOM();
+  dom.window.document.body.innerHTML = body;
+  const structuredData = data.structuredDataFunction(fileType, dom.window.document, data.url);
+  let structuredDataHtml = '';
+  for (let structuredDataStr of structuredData) {
+    structuredDataHtml += `<script type="application/ld+json">${JSON.stringify(structuredDataStr)}</script>`
+  }
+  return `<body ${bodyAttributes}>${structuredDataHtml}${body}</body>`;
 }
 
 const generateIndex = () => {
   const appBody = root.querySelector('app-body');
   const appRoot = appBody.querySelector('app-root');
   const appIndex = appRoot.querySelector('app-index')?.innerHTML ?? '';
-  createFile(getHead(null) + getPrincipalWrapper(appIndex), 'index.html');
+  createFile(getHead(null) + getPrincipalWrapper('index', appIndex), 'index.html');
 }
 
 
 const generatePages = () => {
-  const dataProject = data.project;
   generateIndex();
   const sections = root.getElementsByTagName('app-section');
   for (let section of sections) {
+    const sectionGroup = section.getAttribute('sectionGroup');
     const nameSection = section.getAttribute('name');
     const sectionPath = clearName(nameSection);
     const subSections = section.getElementsByTagName('app-subsection');
@@ -331,12 +338,12 @@ const generatePages = () => {
       if (sectionLayout) {
         htmlSubSection = sectionLayout.replace('<app-children></app-children>', htmlSubSection);
       }
-      const htmlFinal = getPrincipalWrapper(sectionheader + htmlSubSection + sectionFooter);
+      const htmlFinal = getPrincipalWrapper('subsection-' + sectionGroup, sectionheader + htmlSubSection + sectionFooter);
 
       createFile(htmlHeader + htmlFinal, subSectionPath, 'index.html');
     }
     const htmlHeader = getHead(section, 'app-section-head', sectionPath);
-    const htmlFinal = getPrincipalWrapper(sectionheader + sectionIndex + sectionFooter);
+    const htmlFinal = getPrincipalWrapper('section-' + sectionGroup, sectionheader + sectionIndex + sectionFooter);
     createFile(htmlHeader + htmlFinal, sectionPath, 'index.html');
   }
 }
@@ -415,6 +422,7 @@ const generateSEOFiles = () => {
 
 export const generateDist = (appName) => {
   data.project = pages.projects[appName].groupSections;
+  data.structuredDataFunction = pages.projects[appName].getStructuredData;
   setAttributeForTags('img', 'loading', 'lazy');
   clearVars();
   clearSectionsTemplates();

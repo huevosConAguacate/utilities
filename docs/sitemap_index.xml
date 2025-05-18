@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>$URL/aves-de-caza/sitemap.xml</loc>
+    <loc>https://huevosconaguacate.github.io/utilities/aves-de-caza/sitemap.xml</loc>
     <lastmod>2025-05-25T19:44:06+02:00</lastmod>
   </sitemap>
 
   <sitemap>
-    <loc>$URL/prueba/sitemap.xml</loc>
-    <lastmod>2025-05-25T19:44:06+02:00</lastmod>
+    <loc>https://huevosconaguacate.github.io/utilities/busqueda/sitemap.xml</loc>
+    <lastmod>null+01:00</lastmod>
   </sitemap>
 </sitemapindex>

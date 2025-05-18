@@ -1,6 +1,8 @@
 <app-vars>
     <app-var injectValue="ACTUAL_PATH" />
-    <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+    
+    <!-- <app-var name="KKURL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" /> -->
+    <app-var name="URL" value="https://huevosconaguacate.github.io/utilities" />
     <app-var name="APP_NAME" value="Mis delicias de cocina" />
     <app-var name="SITE_NAME" value="misDeliciasDeCocina.com" />
     <app-var name="TITLE_SEPARATOR" value="|"></app-var>
@@ -225,7 +227,7 @@
             </app-subsection-template>
         </app-section-templates>
         <app-section-group name="busqueda">
-            <app-section name="busqueda">
+            <app-section name="busqueda" sectionGroup="busqueda">
                 <app-section-head data-title="$TITLE $TITLE_SEPARATOR Búsqueda" data-type="website">
 
                 </app-section-head>
@@ -414,7 +416,6 @@
         <li class="relative group h-full flex items-center">
             <span class="h-full flex items-center px-6 hover:text-yellow-600 cursor-pointer relative gap-1">
                 <span>${label}</span>
-                <!-- Flecha que rota al hacer hover -->
                 <svg class="w-4 h-4 text-yellow-600 transition-transform duration-300 group-hover:rotate-180"
                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -526,7 +527,7 @@
                                 <circle cx="12" cy="12" r="9" stroke-width="2" />
                                 <path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <time datetime="${tiempo_value}">Listo en: ${tiempo_label}</time>
+                            <time datetime="${tiempo_value}">Tiempo de preparación: ${tiempo_label}</time>
                         </div>
                     </div>
                     <p class="mt-1 text-gray-700 text-sm leading-relaxed line-clamp-3">

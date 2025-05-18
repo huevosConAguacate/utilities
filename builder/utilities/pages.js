@@ -1,24 +1,46 @@
 export const pages = {
     projects: {
         misDeliciasDeCocina: {
+            getStructuredData: (fileType, dom, url) => {
+                const structuredData = [
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "ItemList",
+                        "itemListElement": [
+                            {
+                                "@type": "SiteNavigationElement",
+                                "name": "Inicio",
+                                "url": url
+                            },
+                            {
+                                "@type": "SiteNavigationElement",
+                                "name": "Aves de caza",
+                                "url": url + "/aves-de-caza"
+                            }
+                        ]
+                    }
+                ];
+                if (fileType === 'index') {
+                    structuredData.push({
+                        "@context": "https://schema.org/",
+                        "@type": "WebSite",
+                        "url": url,
+                        "potentialAction": {
+                            "@type": "SearchAction",
+                            "target": `${url}/busqueda/index.html?q={search_term_string}`,
+                            "query-input": "required name=search_term_string"
+                        }
+                    })
+                } else if (fileType === 'section-recipes') {
+
+                }
+                return structuredData
+            },
             groupSections: [
                 {
                     name: "recipes",
                     render: {
-                        structuredData: {
-                            recipe: (page, html) => {
-                                return ['Dato estructurado 1', 'Dato estructurado 2']
-                            }
-                        },
-                        templates: {
-
-                        },
                         subsections: {
-                            structuredData: {
-                                recipe: (value) => {
-                                    return ['Dato estructurado 1', 'Dato estructurado 2']
-                                }
-                            },
                             templates: {
                                 featured: (value) => value ? 'featured' : '',
                                 "recipe.diners": (value) => value === 1 ? '1 comensal' : `${value} comensales`,

@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: $URL/sitemap_index.xml
+Sitemap: https://huevosconaguacate.github.io/utilities/sitemap_index.xml

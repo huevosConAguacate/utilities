@@ -21,10 +21,10 @@
     <meta name="google-site-verification" content="WLSQr_gdw4s68cEgkicXCKp3L_hMJMJiLmEbXzzMP9M">
 
     <!-- Canonical y URL -->
-    <link rel="canonical" href="https://huevosconaguacate.github.io/utilities/aves-de-caza">
+    <link rel="canonical" href="https://huevosconaguacate.github.io/utilities/busqueda">
 
     <!-- Open Graph -->
-    <meta property="og:url" content="https://huevosconaguacate.github.io/utilities/aves-de-caza">
+    <meta property="og:url" content="https://huevosconaguacate.github.io/utilities/busqueda">
     <meta property="og:title" content="Recetas de Cocina | Ideas Fáciles y Saludables">
     <meta property="og:site_name" content="misDeliciasDeCocina.com">
     <meta property="og:locale" content="es_ES">
@@ -139,70 +139,186 @@
         
             <main class="max-w-4xl mx-auto p-3 !pt-24 sm:p-5 lg:p-7 text-sm sm:text-base">
                 
-                            <!-- cabecera de Aves de caza -->
+                    <script defer="">
+                        window.onload = () => {
+
+                            const getQuery = () => {
+                                const paramsString = window.location.search;
+                                const searchParams = new URLSearchParams(paramsString);
+                                const query = searchParams.get("q") ?? '';
+                                const inputBuscadores = document.querySelectorAll('.inputBuscador');
+                                for (inputBuscador of inputBuscadores)
+                                    inputBuscador.value = query;
+                                return query;
+                            }
+
+                            const getDataByQuery = (query) => {
+                                const raw = document.getElementById('subsections-json').innerHTML.trim();
+                                const cleaned = raw.replace(/,\s*\]$/, ']');
+                                try {
+                                    const data = JSON.parse(cleaned);
+                                    if (!query) return [];
+
+                                    const clearString = (str) => {
+                                        return str
+                                            .toLowerCase()
+                                            .normalize("NFD")
+                                            .replace(/[\u0300-\u036f]/g, "")        // elimina tildes
+                                            .replace(/[^a-z0-9]+/g, " ")            // reemplaza todo lo que no sea letra o número por espacio
+                                            .replace(/\s+/g, " ")                   // elimina espacios múltiples
+                                            .trim();
+                                    }
+                                    const words = clearString(query).split(" ");
+                                    return data.filter(item => {
+                                        if (!item.name) return false;
+                                        const name = clearString(item.name);
+                                        return words.some(word => name.includes(word));
+                                    });
+                                    return data;
+                                } catch (err) {
+                                    return [];
+                                }
+                            }
+                            const query = getQuery();
+                            const data = getDataByQuery(query);
+                            const containerNotResults = document.querySelector('#container-not-results');
+                            const title = document.querySelector('.title-section-normal');
+                            const containerRecipes = document.querySelector('#container-recipes');
+                            let titleText = '';
+                            if (!query || !data.length) {
+                                containerRecipes.innerHTML = '';
+                                titleText = `No se encontró nada por «${query}»`;
+                                containerNotResults.removeAttribute('hidden');
+                            } else {
+                                let htmlRecipes = '';
+                                titleText = `Recetas encontradas para «${query}»`;
+                                for (let recipe of data) {
+                                    let html = containerRecipes.innerHTML;
+                                    for (let [key, value] of Object.entries(recipe)) {
+                                        html = html.replaceAll(`RECIPE_${key.toUpperCase()}`, value);
+                                    }
+                                    htmlRecipes += html;
+                                }
+                                containerRecipes.innerHTML = htmlRecipes;
+                                containerRecipes.removeAttribute('hidden');
+                            }
+                            title.innerHTML = titleText;
+                            document.title = titleText;
+
+                            console.log(data);
+
+                        }
+                    </script>
+                    <div id="subsections-json" hidden="">
+                        [
                         
+                            {
+                            "path": "aves-de-caza/pollo-con-patatas",
+                            "img": "pollo-con-patatas-al-horno",
+                            "name": "Pollo con patatas",
+                            "description": "La mejor receta de pollo",
+                            "time_label": "1 hora y 30 minutos",
+                            "time_value": "PT1H30M"
+                            },
+                        
+                            {
+                            "path": "aves-de-caza/pavo-con-batatas",
+                            "img": "pavo-con-batatas-al-horno",
+                            "name": "Pavo con batatas",
+                            "description": "Una receta deliciosa y nutritiva de pavo al horno con batatas.",
+                            "time_label": "45 minutos",
+                            "time_value": "PT45M"
+                            },
+                        
+                        ]
+                    </div>
+                    <section class="pb-6 sm:pb-6 mt-2">
+                        <h1 class="title-section-normal text-2xl pb-3 sm:text-3xl font-bold text-yellow-600"></h1>
+                        <div id="container-recipes" hidden="">
                             
-        <header class="pb-4 sm:pb-6">
-            <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">Aves de caza</h1>
-            <p class="text-gray-600 mt-2 sm:mt-2">¡Las mejores recetas con aves y carnes de caza! Descubre las más fáciles recetas de aves al horno, rellenas, para Navidad, ocasiones especiales o cualquier día de la semana con estas preparaciones deliciosas que sorprenderán a todos tus comensales.</p>
-        </header>
-    
-                            
-                                
-        <a href="https://huevosconaguacate.github.io/utilities/aves-de-caza/pollo-con-patatas" class="block hover:shadow-lg transition-shadow duration-200 mt-4">
+        <a href="https://huevosconaguacate.github.io/utilities/RECIPE_PATH" class="block hover:shadow-lg transition-shadow duration-200 mt-4">
             <div class="flex flex-col sm:flex-row gap-4 bg-white rounded-xl shadow-md overflow-hidden p-4">
-                <img src="https://huevosconaguacate.github.io/utilities/img/recipes/pollo-con-patatas-al-horno.webp" alt="Pollo con patatas" class="w-full sm:w-48 h-36 object-cover rounded-md" loading="lazy">
+                <img src="https://huevosconaguacate.github.io/utilities/img/recipes/RECIPE_IMG.webp" alt="RECIPE_NAME" class="w-full sm:w-48 h-36 object-cover rounded-md" loading="lazy">
                 <div class="flex flex-col flex-1">
                     <div>
                         <h2 class="text-xl font-semibold text-gray-900">
                             <p class="hover:underline text-amber-700 hover:text-amber-800">
-                                Pollo con patatas</p>
+                                RECIPE_NAME</p>
                         </h2>
                         <div class="flex items-center gap-1 text-sm text-gray-500 mt-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="shrink-0">
                                 <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
                                 <path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                             </svg>
-                            <time datetime="PT1H30M">Tiempo de preparación: 1 hora y 30 minutos</time>
+                            <time datetime="RECIPE_TIME_VALUE">Tiempo de preparación: RECIPE_TIME_LABEL</time>
                         </div>
                     </div>
                     <p class="mt-1 text-gray-700 text-sm leading-relaxed line-clamp-3">
-                        La mejor receta de pollo
+                        RECIPE_DESCRIPTION
                     </p>
                 </div>
             </div>
         </a>
     
-                            
-                                
-        <a href="https://huevosconaguacate.github.io/utilities/aves-de-caza/pavo-con-batatas" class="block hover:shadow-lg transition-shadow duration-200 mt-4">
-            <div class="flex flex-col sm:flex-row gap-4 bg-white rounded-xl shadow-md overflow-hidden p-4">
-                <img src="https://huevosconaguacate.github.io/utilities/img/recipes/pavo-con-batatas-al-horno.webp" alt="Pavo con batatas" class="w-full sm:w-48 h-36 object-cover rounded-md" loading="lazy">
-                <div class="flex flex-col flex-1">
-                    <div>
-                        <h2 class="text-xl font-semibold text-gray-900">
-                            <p class="hover:underline text-amber-700 hover:text-amber-800">
-                                Pavo con batatas</p>
-                        </h2>
-                        <div class="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="shrink-0">
-                                <circle cx="12" cy="12" r="9" stroke-width="2"></circle>
-                                <path d="M12 7v5l3 2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                            </svg>
-                            <time datetime="PT45M">Tiempo de preparación: 45 minutos</time>
                         </div>
-                    </div>
-                    <p class="mt-1 text-gray-700 text-sm leading-relaxed line-clamp-3">
-                        Una receta deliciosa y nutritiva de pavo al horno con batatas.
-                    </p>
-                </div>
-            </div>
-        </a>
-    
+                        <div id="container-not-results" hidden="">
                             
-                        
-                            <!-- footer de Aves de caza -->
-                        
+        
+        <section class="pb-6 sm:pb-6 mt-2">
+            <h2 class="text-xl pb-3 sm:text-2xl font-bold text-yellow-600">Puedes echar un ojo a nuestras recetas destacadas</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                    <a href="https://huevosconaguacate.github.io/utilities/aves-de-caza/pollo-con-patatas" class="block group">
+                        <div class="relative h-64 rounded-xl overflow-hidden">
+                            <img src="https://huevosconaguacate.github.io/utilities/img/recipes/pollo-con-patatas-al-horno.webp" alt="Pollo con patatas" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:blur-sm" loading="lazy">
+                            <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
+                                <div class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
+                                    <h3 class="text-white text-xl font-semibold mb-1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                        Pollo con patatas
+                                    </h3>
+                                    <p class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        La mejor receta de pollo
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                
+                    <a href="https://huevosconaguacate.github.io/utilities/aves-de-caza/pavo-con-batatas" class="block group">
+                        <div class="relative h-64 rounded-xl overflow-hidden">
+                            <img src="https://huevosconaguacate.github.io/utilities/img/recipes/pavo-con-batatas-al-horno.webp" alt="Pavo con batatas" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-90 group-hover:blur-sm" loading="lazy">
+                            <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-4 z-10 overflow-hidden">
+                                <div class="transition-transform duration-500 group-hover:translate-y-0 translate-y-[calc(100%-1.5rem)]">
+                                    <h3 class="text-white text-xl font-semibold mb-1 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+                                        Pavo con batatas
+                                    </h3>
+                                    <p class="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        Una receta deliciosa y nutritiva de pavo al horno con batatas.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                
+            </div>
+        
+        </section>
+    
+    
+                            <div class="mt-6 text-center">
+                                <a href="https://huevosconaguacate.github.io/utilities" class="inline-flex items-center gap-2 px-5 py-2 bg-orange-600 text-white font-medium rounded-lg shadow hover:bg-orange-700 transition">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M4 10v10h5v-6h6v6h5V10"></path>
+                                    </svg>
+                                    Volver al inicio
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                
             </main>
         
             <footer class="bg-yellow-600 text-white mt-12">
