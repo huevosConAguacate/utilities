@@ -2,24 +2,25 @@ export const pages = {
     projects: {
         misDeliciasDeCocina: {
             getStructuredData: (fileType, dom, url) => {
+                const links = dom.querySelectorAll('header nav ul a');
+                const itemListElement = [];
+                for (const link of links) {
+                    const label = link.querySelector('span')?.innerHTML;
+                    const href = link.href;
+                    if (!label || !href) continue;
+                    itemListElement.push({
+                        "@type": "SiteNavigationElement",
+                        "name": label,
+                        "url": href
+                    })
+                }
                 const structuredData = [
                     {
                         "@context": "https://schema.org",
                         "@type": "ItemList",
-                        "itemListElement": [
-                            {
-                                "@type": "SiteNavigationElement",
-                                "name": "Inicio",
-                                "url": url
-                            },
-                            {
-                                "@type": "SiteNavigationElement",
-                                "name": "Aves de caza",
-                                "url": url + "/aves-de-caza"
-                            }
-                        ]
+                        "itemListElement": itemListElement
                     }
-                ];
+                ]
                 if (fileType === 'index') {
                     structuredData.push({
                         "@context": "https://schema.org/",
@@ -33,6 +34,31 @@ export const pages = {
                     })
                 } else if (fileType === 'section-recipes') {
 
+                } else if (fileType === 'subsection-recipes') {
+                    structuredData.push({
+                        "@context": "https://schema.org/",
+                        "@type": "Recipe",
+                        "name": dom.querySelector('article header h1').innerHTML,
+                        "description": dom.querySelector('article header p').innerHTML.trim(),
+                        // "author": {
+                        //     "@type": "Person",
+                        //     "name": "Micaela Demarchi"
+                        // },
+                        "image": [
+                            dom.querySelector('article header figure img').src
+                        ],
+                        "totalTime": dom.querySelector('article section time').getAttribute('datetime'),
+                        // "recipeYield": 6,
+                        // "nutrition": {
+                        //     "@type": "NutritionInformation",
+                        //     "calories": "303.3 kcal",
+                        //     "fatContent": "17.3 g"
+                        // },
+                        "recipeCategory": dom.querySelector('article').dataset.section,
+                        "recipeIngredient": Array.from(dom.querySelectorAll('article section.ingredientes li')).map(li => li.innerHTML),
+                        "recipeInstructions":
+                            Array.from(dom.querySelectorAll('article section.elaboracion li span')).map(li => { return { "@type": "HowToStep", "text": li.innerHTML } }),
+                    })
                 }
                 return structuredData
             },

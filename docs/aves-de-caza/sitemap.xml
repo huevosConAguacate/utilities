@@ -2,19 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://huevosconaguacate.github.io/utilities/aves-de-caza/</loc>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/</loc>
  <image:image>
-   <image:loc>https://huevosconaguacate.github.io/utilities/img/recipes/pollo-con-patatas-al-horno.webp</image:loc>
+   <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/recipes/pollo-con-patatas-al-horno.webp</image:loc>
  </image:image>
  <image:image>
-   <image:loc>https://huevosconaguacate.github.io/utilities/img/recipes/pavo-con-batatas-al-horno.webp</image:loc>
+   <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/recipes/pavo-con-batatas-al-horno.webp</image:loc>
  </image:image></url><url>
-    <loc>https://huevosconaguacate.github.io/utilities/aves-de-caza/pollo-con-patatas/</loc>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/pollo-con-patatas/</loc>
  <image:image>
-   <image:loc>https://huevosconaguacate.github.io/utilities/img/recipes/pollo-con-patatas-al-horno.webp</image:loc>
+   <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/recipes/pollo-con-patatas-al-horno.webp</image:loc>
  </image:image></url><url>
-    <loc>https://huevosconaguacate.github.io/utilities/aves-de-caza/pavo-con-batatas/</loc>
+    <loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/aves-de-caza/pavo-con-batatas/</loc>
  <image:image>
-   <image:loc>https://huevosconaguacate.github.io/utilities/img/recipes/pavo-con-batatas-al-horno.webp</image:loc>
+   <image:loc>http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist/img/recipes/pavo-con-batatas-al-horno.webp</image:loc>
  </image:image></url>
 </urlset>

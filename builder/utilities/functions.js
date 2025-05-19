@@ -141,8 +141,8 @@ const clearSectionsTemplates = () => {
       let html = clearVars({ ...data, sectionGroupName: name }, sectionTemplate, groupSection.render?.sections?.templates ?? {});
       let htmlSubsections = '';
       for (let subsection of subsections) {
-        const { data } = subsection;
-        const htmlSubsection = clearVars(data, subsectionTemplate, groupSection.render?.subsections?.templates ?? {});
+        const { data: dataSubsection } = subsection;
+        const htmlSubsection = clearVars({...dataSubsection, section: data.title}, subsectionTemplate, groupSection.render?.subsections?.templates ?? {});
         htmlSubsections += htmlSubsection;
       }
       html = html.replace('<app-subsections></app-subsections>', htmlSubsections);

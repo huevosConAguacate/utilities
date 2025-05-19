@@ -1,8 +1,8 @@
 <app-vars>
     <app-var injectValue="ACTUAL_PATH" />
-    
-    <!-- <app-var name="KKURL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" /> -->
-    <app-var name="URL" value="https://huevosconaguacate.github.io/utilities" />
+
+    <app-var name="URL" value="http://127.0.0.1:5500/utilities/apps/misDeliciasDeCocina/dist" />
+    <!-- <app-var name="URL" value="https://huevosconaguacate.github.io/utilities" /> -->
     <app-var name="APP_NAME" value="Mis delicias de cocina" />
     <app-var name="SITE_NAME" value="misDeliciasDeCocina.com" />
     <app-var name="TITLE_SEPARATOR" value="|"></app-var>
@@ -92,7 +92,7 @@
                                             class="flex items-center px-4 py-2 w-full h-full">
                                             <img class="w-5 h-5 mr-2 rounded-full" alt="${section.name}"
                                                 src="$URL/img/recipes/categories/${section.path}.webp">
-                                            ${section.name}
+                                            <span>${section.name}</span>
                                         </a>
                                     </li>
                                 </app-forEach-section>
@@ -203,25 +203,22 @@
                         <meta property="article:modified_time" content="%lastmod%">
                     </app-subsection-head>
                     <app-subsection-body>
-                        <app-use-template name="receta">
+                        <article data-section="%section%">
                             <app-use-template name="receta-header" data-title="%title%"
                                 data-img="%recipe.header.img.src%" data-imgdesc="%recipe.header.img.desc%">
                                 %recipe.header.body%
                             </app-use-template>
-
                             <app-use-template name="receta-info" data-comensales="%recipe.diners%"
                                 data-tiempo_label="%recipe.time.label%"
                                 data-tiempo_value="%recipe.time.value%"></app-use-template>
-
                             <app-use-template name="receta-ingredientes" data-img="%recipe.ingredients.img.src%"
                                 data-imgdesc="%recipe.ingredients.img.desc%">
                                 %recipe.ingredients.list%
                             </app-use-template>
-
                             <app-use-template name="receta-elaboracion">
                                 %recipe.elaboration%
                             </app-use-template>
-                        </app-use-template>
+                        </article>
                     </app-subsection-body>
                 </app-subsection>
             </app-subsection-template>
@@ -428,14 +425,6 @@
         </li>
     </app-template>
 
-    <app-template name="receta">
-
-        <article>
-            <app-children></app-children>
-        </article>
-
-    </app-template>
-
     <app-template name="receta-header" data-title data-img data-imgdesc>
         <header class="pb-4 sm:pb-6">
             <h1 class="text-2xl sm:text-3xl font-bold text-yellow-600">${title}</h1>
@@ -453,7 +442,7 @@
 
     <app-template name="receta-info" data-comensales="1 comensal" data-tiempo_label="20 minutos"
         data-tiempo_value="PT20M">
-        <div class="grid grid-cols-2 gap-6 mb-6">
+        <section class="grid grid-cols-2 gap-6 mb-6">
             <div class="flex items-center space-x-2">
                 <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -472,11 +461,11 @@
                 <span class="text-lg font-medium text-gray-700">Tiempo total:</span>
                 <time class="text-lg font-semibold text-gray-900" datetime="${tiempo_value}">${tiempo_label}</time>
             </div>
-        </div>
+        </section>
     </app-template>
 
     <app-template name="receta-ingredientes" data-img="" data-imgdesc="Imagen de comida">
-        <section class="pt-4 pb-2 sm:pt-6 border-t border-gray-500">
+        <section class="ingredientes pt-4 pb-2 sm:pt-6 border-t border-gray-500">
             <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
                 Ingredientes
             </h2>
@@ -491,7 +480,7 @@
 
     <app-template name="receta-paso" data-img="" data-imgdesc="Imagen de comida">
         <li class="pt-6 pb-2">
-            <app-children></app-children>
+            <span><app-children></app-children></span>
             <figure class="w-full">
                 <img src="$URL/img/recipes/${img}.webp" alt="${imgdesc}" class="w-full mt-2 h-auto object-cover" />
             </figure>
@@ -499,7 +488,7 @@
     </app-template>
 
     <app-template name="receta-elaboracion">
-        <section class="pt-4 pb-4 sm:pt-6 border-t border-gray-500">
+        <section class="elaboracion pt-4 pb-4 sm:pt-6 border-t border-gray-500">
             <h2 class="text-xl sm:text-2xl font-semibold text-yellow-600 mb-3 sm:mb-4">
                 Elaboración
             </h2>
